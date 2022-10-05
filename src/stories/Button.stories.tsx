@@ -1,41 +1,97 @@
-import React from 'react';
 import { ComponentStory, ComponentMeta } from '@storybook/react';
-
-import { Button } from './Button';
+import { ButtonSC } from '../styles/ButtonSC';
 
 // More on default export: https://storybook.js.org/docs/react/writing-stories/introduction#default-export
 export default {
-  title: 'Example/Button',
-  component: Button,
-  // More on argTypes: https://storybook.js.org/docs/react/api/argtypes
-  argTypes: {
-    backgroundColor: { control: 'color' },
-  },
-} as ComponentMeta<typeof Button>;
+  title: 'App/Button',
+  component: ButtonSC,
+} as ComponentMeta<typeof ButtonSC>;
 
 // More on component templates: https://storybook.js.org/docs/react/writing-stories/introduction#using-args
-const Template: ComponentStory<typeof Button> = (args) => <Button {...args} />;
+const Template: ComponentStory<typeof ButtonSC> = (args) => (
+  <ButtonSC {...args} />
+);
 
-export const Primary = Template.bind({});
-// More on args: https://storybook.js.org/docs/react/writing-stories/args
-Primary.args = {
+// Primary Auto Width
+export const PrimaryDefault = Template.bind({});
+PrimaryDefault.args = {
   primary: true,
-  label: 'Button',
+  children: 'Primary',
 };
 
-export const Secondary = Template.bind({});
-Secondary.args = {
-  label: 'Button',
-};
-
-export const Large = Template.bind({});
-Large.args = {
-  size: 'large',
-  label: 'Button',
-};
-
-export const Small = Template.bind({});
-Small.args = {
+export const PrimarySmall = Template.bind({});
+PrimarySmall.args = {
+  primary: true,
   size: 'small',
-  label: 'Button',
+  children: 'Primary Small',
+};
+
+export const PrimaryLarge = Template.bind({});
+PrimaryLarge.args = {
+  primary: true,
+  size: 'large',
+  children: 'Primary Large',
+};
+
+// Primary Wide
+export const PrimaryDefaultWide = Template.bind({});
+PrimaryDefaultWide.args = {
+  primary: true,
+  children: 'Primary',
+  isWide: true,
+};
+
+export const PrimarySmallWide = Template.bind({});
+PrimarySmallWide.args = {
+  primary: true,
+  size: 'small',
+  children: 'Primary Small',
+  isWide: true,
+};
+
+export const PrimaryLargeWide = Template.bind({});
+PrimaryLargeWide.args = {
+  primary: true,
+  size: 'large',
+  children: 'Primary Large',
+  isWide: true,
+};
+
+// Secondary Auto Width
+export const SecondaryDefault = Template.bind({});
+SecondaryDefault.args = {
+  children: 'Secondary',
+};
+
+export const SecondarySmall = Template.bind({});
+SecondarySmall.args = {
+  size: 'small',
+  children: 'Secondary Small',
+};
+
+export const SecondaryLarge = Template.bind({});
+SecondaryLarge.args = {
+  size: 'large',
+  children: 'Secondary Large',
+};
+
+// Secondary Wide
+export const SecondaryDefaultWide = Template.bind({});
+SecondaryDefaultWide.args = {
+  children: 'Secondary',
+  isWide: true,
+};
+
+export const SecondarySmallWide = Template.bind({});
+SecondarySmallWide.args = {
+  size: 'small',
+  children: 'Secondary Small',
+  isWide: true,
+};
+
+export const SecondaryLargeWide = Template.bind({});
+SecondaryLargeWide.args = {
+  size: 'large',
+  children: 'Secondary Large',
+  isWide: true,
 };
