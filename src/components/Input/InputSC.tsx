@@ -7,6 +7,7 @@ export type InputProps = {
   type?: string;
 };
 
+// TODO: Remove this file because react hook form doesn't work with SC
 const InputSCBase = styled.input<InputProps>`
   border-radius: 4px;
   padding: 10px 20px;

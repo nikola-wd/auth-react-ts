@@ -5,7 +5,7 @@ export const AuthWrapSC = styled.div`
   max-width: 700px;
   margin: 100px auto;
 
-  > * {
+  form > * {
     margin-bottom: 20px;
   }
 

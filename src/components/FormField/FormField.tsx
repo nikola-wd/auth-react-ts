@@ -1,19 +1,21 @@
 import React from 'react';
+
 import { FormFieldWrap } from '../../styles/FormFieldWrap';
 
-import { InputProps, InputSC } from '../Input/InputSC';
+import { InputProps } from '../Input/InputSC';
 
 type FieldProps = {
   id: string;
-  tag?: string;
+  label?: string;
 } & InputProps;
 
 const FormField = (props: React.PropsWithChildren<FieldProps>) => {
-  const { id, tag, children } = props;
+  const { id, label = '', children } = props;
+
   return (
     <FormFieldWrap>
-      <label htmlFor={`${id}`}>{children}</label>
-      <InputSC tag={tag} id={id} />
+      <label htmlFor={`${id}`}>{label}</label>
+      {children}
     </FormFieldWrap>
   );
 };
