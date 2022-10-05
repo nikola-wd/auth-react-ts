@@ -2,6 +2,7 @@ import { ButtonSC } from '../../styles/ButtonSC';
 import { HeaderActionsSC, HeaderSC } from '../../styles/HeaderSC';
 import Logo from '../svg/Logo';
 
+// TODO: Move to types files
 type User = {
   firstName: string;
   email?: string;

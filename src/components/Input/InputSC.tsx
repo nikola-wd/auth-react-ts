@@ -1,7 +1,13 @@
 import styled from 'styled-components';
 import { withDynamicTag } from '../../styles/stylesUtils/withDynamicTag';
 
-const FieldSCBase = styled.input<{ tag?: string }>`
+export type InputProps = {
+  tag?: string | undefined;
+  id?: string;
+  type?: string;
+};
+
+const InputSCBase = styled.input<InputProps>`
   border-radius: 4px;
   padding: 10px 20px;
   border: 1px solid #cecece;
@@ -19,4 +25,5 @@ const FieldSCBase = styled.input<{ tag?: string }>`
   `}
 `;
 
-export const FieldSC = withDynamicTag(FieldSCBase);
+// TODO: Maybe export default, and for types, named export
+export const InputSC = withDynamicTag(InputSCBase);

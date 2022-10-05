@@ -11,7 +11,11 @@ export const withDynamicTag = (Component: any) => {
 
   // TODO: Better types
 
-  const DynamicTag = (props: { tag?: any }) => {
+  const DynamicTag = (props: {
+    tag?: string | undefined;
+    id?: string;
+    type?: string;
+  }) => {
     const { tag } = props;
 
     if (typeof tag !== 'string' || !styled.hasOwnProperty(tag)) {
