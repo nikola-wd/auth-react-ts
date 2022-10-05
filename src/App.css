@@ -42,3 +42,9 @@ h2:before {
   width: 40px;
   background: #555ab9;
 }
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

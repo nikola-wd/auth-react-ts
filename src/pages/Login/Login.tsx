@@ -1,13 +1,13 @@
 import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
-import { ButtonSC } from '../../styles/ButtonSC';
 import FormField from '../../components/FormField/FormField';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import React from 'react';
+import React, { useState } from 'react';
 import { FormFieldWrap } from '../../styles/FormFieldWrap';
 import { InputSC } from '../../components/Input/InputSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { Link } from 'react-router-dom';
-import { REGESPS } from '../../utils/REGEXPS';
+import { REGEXSPS } from '../../utils/REGEXPS';
+import Button from '../../components/Button/Button';
 
 type Inputs = {
   username: string;
@@ -22,9 +22,15 @@ const Login = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    setLoading(true);
+  };
 
   console.log(watch('username')); // watch input value by passing the name of it
+
+  // TODO: Temp, remove
+  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <AuthWrapSC>
@@ -32,7 +38,14 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormField
           id="#login_username"
-          label="Username (Only lowercase alphanumeric characters, underscores and dots.)"
+          label={
+            <>
+              Username{' '}
+              <small>
+                (Only lowercase alphanumeric characters, underscores and dots.)
+              </small>
+            </>
+          }
           error={errors.username}
         >
           <input
@@ -41,7 +54,7 @@ const Login = () => {
             {...register('username', {
               required: true,
               minLength: 3,
-              pattern: REGESPS.Username,
+              pattern: REGEXSPS.Username,
             })}
           />
           {errors.username && (
@@ -52,9 +65,34 @@ const Login = () => {
           <input
             type="text"
             id="login_email"
-            {...register('email', { required: true, pattern: REGESPS.Email })}
+            {...register('email', { required: true, pattern: REGEXSPS.Email })}
           />
           {errors.email && (
+            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+          )}
+        </FormField>
+        <FormField
+          id="#login_password"
+          label={
+            <>
+              Password{' '}
+              <small>
+                (6 - 16 characters; Minimum 1 of each: uppercase, lowercase,
+                number, special character)
+              </small>
+            </>
+          }
+          error={errors.password}
+        >
+          <input
+            type="password"
+            id="login_Password"
+            {...register('password', {
+              required: true,
+              pattern: REGEXSPS.Password,
+            })}
+          />
+          {errors.password && (
             <FormFieldErrorSC>This field is required</FormFieldErrorSC>
           )}
         </FormField>
@@ -65,15 +103,16 @@ const Login = () => {
           <small>(Forgot Password?)</small>
         </FormField> */}
 
-        <ButtonSC
+        <Button
           primary
           isWide
           size="large"
           type="submit"
+          loading={loading}
           onClick={() => console.log('yoo')}
         >
           Login
-        </ButtonSC>
+        </Button>
       </form>
 
       <footer>

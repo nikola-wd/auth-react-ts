@@ -3,8 +3,9 @@ import styled from 'styled-components';
 export const ButtonSC = styled.button<{
   primary?: boolean;
   isWide?: boolean;
-  size?: 'small' | 'large';
-  onClick?: () => void;
+  size?: undefined | 'small' | 'large';
+  type?: 'button' | 'submit';
+  onClick?: undefined | (() => void);
 }>`
   display: inline-flex;
   justify-content: center;
@@ -50,5 +51,12 @@ export const ButtonSC = styled.button<{
 
   &:hover {
     opacity: 0.8;
+  }
+
+  svg {
+    width: 15px;
+    height: 15px;
+    margin-left: 6px;
+    animation: spin 2s infinite linear;
   }
 `;

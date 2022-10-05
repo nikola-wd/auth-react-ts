@@ -1,8 +1,9 @@
 // TODO: Test email regexp
 
-const REGESPS = {
+const REGEXSPS = {
   Username: /^[a-z0-9_.]+$/,
   Email: /^\S+@\S+\.\S+$/,
+  Password: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/,
 };
 
-export { REGESPS };
+export { REGEXSPS };

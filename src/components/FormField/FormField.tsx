@@ -7,7 +7,7 @@ import { InputProps } from '../Input/InputSC';
 
 type FieldProps = {
   id: string;
-  label?: string;
+  label?: string | React.ReactNode;
   error?: FieldError | undefined;
 } & InputProps;
 
