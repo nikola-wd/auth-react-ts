@@ -16,7 +16,16 @@ export const HeaderActionsSC = styled.div`
   display: flex;
   justify-content: space-between;
 
-  button + button {
+  > * + * {
     margin-left: 8px;
+  }
+
+  a {
+    text-decoration: none;
+    display: inline-flex;
+
+    &.active button {
+      box-shadow: inset 0 0 0 2px #fff;
+    }
   }
 `;

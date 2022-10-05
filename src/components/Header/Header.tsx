@@ -1,3 +1,4 @@
+import { NavLink } from 'react-router-dom';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { HeaderActionsSC, HeaderSC } from '../../styles/HeaderSC';
 import Logo from '../svg/Logo';
@@ -19,14 +20,17 @@ const Header = ({ user, onLogin, onLogout, onCreateAccount }: HeaderProps) => {
   return (
     <HeaderSC>
       <Logo />
-
       <HeaderActionsSC>
         {!user ? (
           <>
-            <ButtonSC type="button">Register</ButtonSC>
-            <ButtonSC primary type="button">
-              Login
-            </ButtonSC>
+            <NavLink to="/register">
+              <ButtonSC type="button">Register</ButtonSC>
+            </NavLink>
+            <NavLink to="/login">
+              <ButtonSC primary type="button">
+                Login
+              </ButtonSC>
+            </NavLink>
           </>
         ) : (
           <span>

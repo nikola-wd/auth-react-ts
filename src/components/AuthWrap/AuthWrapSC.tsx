@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const AuthWrapSC = styled.div`
   width: 100%;
   max-width: 700px;
-  margin: auto;
+  margin: 100px auto;
 
   > * {
     margin-bottom: 20px;

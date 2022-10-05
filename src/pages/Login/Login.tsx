@@ -1,7 +1,6 @@
 import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
 import { ButtonSC } from '../../styles/ButtonSC';
 import FormField from '../../components/FormField/FormField';
-import { FlexWrapSC } from '../../styles/FlexWrapSC';
 
 const Login = () => {
   return (
@@ -15,7 +14,6 @@ const Login = () => {
         Password &nbsp;
         <small>(Forgot Password?)</small>
       </FormField>
-      {/* <InputSC tag="textarea" /> */}
 
       <ButtonSC primary isWide size="large" onClick={() => console.log('yoo')}>
         Login
