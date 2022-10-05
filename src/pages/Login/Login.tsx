@@ -38,14 +38,7 @@ const Login = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormField
           id="#login_username"
-          label={
-            <>
-              Username{' '}
-              <small>
-                (Only lowercase alphanumeric characters, underscores and dots.)
-              </small>
-            </>
-          }
+          label="Username"
           error={errors.username}
         >
           <input
@@ -77,8 +70,7 @@ const Login = () => {
             <>
               Password{' '}
               <small>
-                (6 - 16 characters; Minimum 1 of each: uppercase, lowercase,
-                number, special character)
+                <Link to="/register">Forgot Password?</Link>
               </small>
             </>
           }
@@ -86,7 +78,7 @@ const Login = () => {
         >
           <input
             type="password"
-            id="login_Password"
+            id="login_password"
             {...register('password', {
               required: true,
               pattern: REGEXSPS.Password,

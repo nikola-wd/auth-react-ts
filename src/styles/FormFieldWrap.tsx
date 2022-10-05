@@ -7,6 +7,16 @@ export const FormFieldWrap = styled.div<{ error?: FieldError | undefined }>`
 
   label {
     letter-spacing: 0.1em;
+
+    a {
+      color: #8c90da;
+      opacity: 0.9;
+      transition: all 0.2s ease-in-out;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
   }
 
   input,

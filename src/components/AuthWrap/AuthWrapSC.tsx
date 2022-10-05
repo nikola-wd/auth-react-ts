@@ -14,12 +14,12 @@ export const AuthWrapSC = styled.div`
     font-size: 14px;
 
     a {
-      color: #fff;
+      color: #8c90da;
       opacity: 0.9;
       transition: all 0.2s ease-in-out;
 
       &:hover {
-        color: #8c90da;
+        opacity: 0.8;
       }
     }
   }
