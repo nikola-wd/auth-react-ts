@@ -2,6 +2,7 @@ import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
 import { ButtonSC } from '../../styles/ButtonSC';
 import FormField from '../../components/FormField/FormField';
 import { FlexWrapSC } from '../../styles/FlexWrapSC';
+import { Link } from 'react-router-dom';
 
 const Register = () => {
   return (
@@ -26,7 +27,9 @@ const Register = () => {
       </ButtonSC>
 
       <footer>
-        <p>Already have an account? Sign In</p>
+        <p>
+          Already have an account? <Link to="/login">Sign In</Link>
+        </p>
       </footer>
     </AuthWrapSC>
   );

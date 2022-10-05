@@ -24,27 +24,21 @@ main.main {
 }
 
 h2 {
+  position: relative;
   color: #fff;
   font-weight: 400;
   font-size: 40px;
   letter-spacing: 0.1em;
-  margin-bottom: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
 }
 
-/* XXX: Styled Components didn't work with react hook form */
-input,
-textarea {
-  border-radius: 4px;
-  padding: 10px 20px;
-  border: 1px solid #cecece;
-  color: #fff;
-  font-size: 14px;
-  background: #1c1c22;
-  width: 100%;
-  transition: all 0.2s ease-in-out;
-}
-
-textarea {
-  min-height: 70px;
-  resize: vertical;
+h2:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  width: 40px;
+  background: #555ab9;
 }

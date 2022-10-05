@@ -5,6 +5,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import React from 'react';
 import { FormFieldWrap } from '../../styles/FormFieldWrap';
 import { InputSC } from '../../components/Input/InputSC';
+import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
+import { Link } from 'react-router-dom';
+import { REGESPS } from '../../utils/REGEXPS';
 
 type Inputs = {
   username: string;
@@ -27,15 +30,33 @@ const Login = () => {
     <AuthWrapSC>
       <h2>Login</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <FormField id="login_username">Username</FormField> */}
-
-        <FormField id="#login_email" label="Email Address">
+        <FormField
+          id="#login_username"
+          label="Username (Only lowercase alphanumeric characters, underscores and dots.)"
+          error={errors.username}
+        >
+          <input
+            type="text"
+            id="login_username"
+            {...register('username', {
+              required: true,
+              minLength: 3,
+              pattern: REGESPS.Username,
+            })}
+          />
+          {errors.username && (
+            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+          )}
+        </FormField>
+        <FormField id="#login_email" label="Email Address" error={errors.email}>
           <input
             type="text"
             id="login_email"
-            {...register('username', { required: true })}
+            {...register('email', { required: true, pattern: REGESPS.Email })}
           />
-          {errors.username && <span>This field is required</span>}
+          {errors.email && (
+            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+          )}
         </FormField>
 
         {/* <input {...register('username', { required: true })} />
@@ -56,7 +77,9 @@ const Login = () => {
       </form>
 
       <footer>
-        <p>Don't have an account? Register</p>
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
       </footer>
     </AuthWrapSC>
   );
