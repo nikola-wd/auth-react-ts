@@ -1,15 +1,14 @@
 import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
 import FormField from '../../components/FormField/FormField';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import React, { useState } from 'react';
-import { FormFieldWrap } from '../../styles/FormFieldWrap';
-import { InputSC } from '../../components/Input/InputSC';
+import { useEffect, useState } from 'react';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { Link } from 'react-router-dom';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
 import { FlexWrapSC } from '../../styles/FlexWrapSC';
 import { postRegisterUser } from '../../utils/api';
+import useRefreshToken from '../../hooks/useRefreshToken';
 
 type Inputs = {
   firstName: string;
@@ -30,23 +29,55 @@ const Register = () => {
   // TODO: Temp, remove
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onSubmit: SubmitHandler<Inputs> = (formData) => {
-    console.log(formData);
-    // setLoading(true);
+  const [formData, setFormData] = useState<null | Inputs>(null);
 
-    let isMounted = true;
-    const controller = new AbortController();
+  // TODO: temp, refactor
+  const [responseData, setResponseData] =
+    useState<[string | undefined, string | undefined]>();
 
-    const tryRegister = async () => {
-      try {
-        const res = await postRegisterUser(formData);
-        console.log('res: ', res);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  const refresh = useRefreshToken();
 
-    tryRegister();
+  useEffect(() => {
+    if (formData) {
+      setLoading(true);
+
+      console.log('SHOULD FETCH NOW');
+      let isMounted = true;
+      const controller = new AbortController();
+
+      const tryRegister = async () => {
+        try {
+          const res = await postRegisterUser(formData, {
+            signal: controller.signal,
+          });
+
+          if (res.status !== 201) {
+            throw new Error('Bad Request');
+          }
+
+          const { access_token, refresh_token } = res.data;
+          console.log('res: ', access_token, refresh_token);
+
+          if (isMounted) setResponseData([access_token, refresh_token]);
+          setLoading(false);
+        } catch (err) {
+          console.log('ERRORRRRR: ', err);
+          setLoading(false);
+        }
+      };
+
+      tryRegister();
+
+      return () => {
+        isMounted = false;
+        controller.abort();
+      };
+    }
+  }, [formData]);
+
+  const onSubmit: SubmitHandler<Inputs> = (data) => {
+    console.log(data);
+    setFormData(data);
   };
 
   console.log(watch('username')); // watch input value by passing the name of it
@@ -170,6 +201,11 @@ const Register = () => {
           Already have an account? <Link to="/login">Sign In</Link>
         </p>
       </footer>
+      {responseData ? JSON.stringify(responseData, null, 2) : null}
+
+      <button type="button" onClick={refresh}>
+        Test Refresh
+      </button>
     </AuthWrapSC>
   );
 };
