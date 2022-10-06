@@ -6,7 +6,7 @@ const Spinner = () => {
       viewBox="0 0 14 14"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g fill="none" fill-rule="evenodd">
+      <g fill="none" fillRule="evenodd">
         <circle
           cx="7"
           cy="7"

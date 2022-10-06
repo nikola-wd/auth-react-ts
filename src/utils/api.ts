@@ -8,5 +8,5 @@ const axiosClient = axios.create({ baseURL: API_BASE });
 const config: AxiosRequestConfig = { withCredentials: true };
 
 // TODO: Type anotate return
-export const postRegisterUser = (data: RegisterUserParams) =>
-  axiosClient.post(`/auth/register`, data, config);
+export const postRegisterUser = async (data: RegisterUserParams) =>
+  axiosClient.post(`/auth/local/signup`, data, config);

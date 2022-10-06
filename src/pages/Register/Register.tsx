@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
 import { FlexWrapSC } from '../../styles/FlexWrapSC';
+import { postRegisterUser } from '../../utils/api';
 
 type Inputs = {
   firstName: string;
@@ -25,15 +26,30 @@ const Register = () => {
     watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    setLoading(true);
-  };
-
-  console.log(watch('username')); // watch input value by passing the name of it
 
   // TODO: Temp, remove
   const [loading, setLoading] = useState<boolean>(false);
+
+  const onSubmit: SubmitHandler<Inputs> = (formData) => {
+    console.log(formData);
+    // setLoading(true);
+
+    let isMounted = true;
+    const controller = new AbortController();
+
+    const tryRegister = async () => {
+      try {
+        const res = await postRegisterUser(formData);
+        console.log('res: ', res);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    tryRegister();
+  };
+
+  console.log(watch('username')); // watch input value by passing the name of it
 
   return (
     <AuthWrapSC>
