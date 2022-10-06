@@ -52,7 +52,7 @@ const Register = () => {
                 required: true,
               })}
             />
-            {errors.username && (
+            {errors.firstName && (
               <FormFieldErrorSC>This field is required</FormFieldErrorSC>
             )}
           </FormField>
@@ -68,12 +68,11 @@ const Register = () => {
                 required: true,
               })}
             />
-            {errors.username && (
+            {errors.lastName && (
               <FormFieldErrorSC>This field is required</FormFieldErrorSC>
             )}
           </FormField>
         </FlexWrapSC>
-
         <FormField
           id="#register_username"
           label={
@@ -138,13 +137,7 @@ const Register = () => {
             <FormFieldErrorSC>This field is required</FormFieldErrorSC>
           )}
         </FormField>
-
-        {/* <input {...register('username', { required: true })} />
-        <FormField id="register_password" type="password">
-          Password &nbsp;
-          <small>(Forgot Password?)</small>
-        </FormField> */}
-
+        l
         <Button
           primary
           isWide

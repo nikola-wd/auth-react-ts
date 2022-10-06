@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { HeaderActionsSC, HeaderSC } from '../../styles/HeaderSC';
 import Logo from '../svg/Logo';
@@ -19,7 +19,9 @@ interface HeaderProps {
 const Header = ({ user, onLogin, onLogout, onCreateAccount }: HeaderProps) => {
   return (
     <HeaderSC>
-      <Logo />
+      <Link to="/">
+        <Logo />
+      </Link>
       <HeaderActionsSC>
         {!user ? (
           <>

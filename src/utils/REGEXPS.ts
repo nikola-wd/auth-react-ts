@@ -1,4 +1,5 @@
 // TODO: Test email regexp
+// TODO: Make the password accept . , ; :
 
 const REGEXSPS = {
   Username: /^[a-z0-9_.]+$/,
