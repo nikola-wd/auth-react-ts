@@ -1,14 +1,19 @@
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import jwt_decode from 'jwt-decode';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
 import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
 import FormField from '../../components/FormField/FormField';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
-import { Link } from 'react-router-dom';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
 import { FlexWrapSC } from '../../styles/FlexWrapSC';
 import { postRegisterUser } from '../../utils/api';
-import useRefreshToken from '../../hooks/useRefreshToken';
+import { setAuthInfo } from '../../store/slices/authSlice';
+import { ERR_MSG } from '../../utils/ERR_MSG';
+import { HttpStatus } from '../../utils/http-status.enum';
 
 type Inputs = {
   firstName: string;
@@ -19,30 +24,30 @@ type Inputs = {
 };
 
 const Register = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
-    watch,
+    // watch,
     formState: { errors },
   } = useForm<Inputs>();
 
   // TODO: Temp, remove
+  // Or create a helper hook that returns data, loading, and error states
   const [loading, setLoading] = useState<boolean>(false);
 
   const [formData, setFormData] = useState<null | Inputs>(null);
-
-  // TODO: temp, refactor
-  const [responseData, setResponseData] =
-    useState<[string | undefined, string | undefined]>();
-
-  const refresh = useRefreshToken();
 
   useEffect(() => {
     if (formData) {
       setLoading(true);
 
       console.log('SHOULD FETCH NOW');
-      let isMounted = true;
       const controller = new AbortController();
 
       const tryRegister = async () => {
@@ -51,17 +56,20 @@ const Register = () => {
             signal: controller.signal,
           });
 
-          if (res.status !== 201) {
+          if (res.status !== HttpStatus.CREATED) {
             throw new Error('Bad Request');
           }
 
-          const { access_token, refresh_token } = res.data;
-          console.log('res: ', access_token, refresh_token);
+          const { access_token } = res.data;
+          let decoded_AT: { email: string; username: string } =
+            jwt_decode(access_token);
+          const { email, username } = decoded_AT;
 
-          if (isMounted) setResponseData([access_token, refresh_token]);
-          setLoading(false);
+          dispatch(setAuthInfo({ user: { email, username }, access_token }));
+          navigate(from, { replace: true });
         } catch (err) {
           console.log('ERRORRRRR: ', err);
+        } finally {
           setLoading(false);
         }
       };
@@ -69,19 +77,16 @@ const Register = () => {
       tryRegister();
 
       return () => {
-        isMounted = false;
         controller.abort();
       };
     }
-  }, [formData]);
+  }, [dispatch, formData, from, navigate]);
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     setFormData(data);
   };
 
-  console.log(watch('username')); // watch input value by passing the name of it
-
+  // TODO: Maybe move error mesages to a helper constants file, or get them from server if somehow this passes
   return (
     <AuthWrapSC>
       <h2>Register</h2>
@@ -100,7 +105,9 @@ const Register = () => {
               })}
             />
             {errors.firstName && (
-              <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+              <FormFieldErrorSC>
+                {ERR_MSG.REGISTER_USER.F_NAME}
+              </FormFieldErrorSC>
             )}
           </FormField>
           <FormField
@@ -116,7 +123,9 @@ const Register = () => {
               })}
             />
             {errors.lastName && (
-              <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+              <FormFieldErrorSC>
+                {ERR_MSG.REGISTER_USER.L_NAME}
+              </FormFieldErrorSC>
             )}
           </FormField>
         </FlexWrapSC>
@@ -142,7 +151,9 @@ const Register = () => {
             })}
           />
           {errors.username && (
-            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+            <FormFieldErrorSC>
+              {ERR_MSG.REGISTER_USER.USERNAME}
+            </FormFieldErrorSC>
           )}
         </FormField>
         <FormField
@@ -156,7 +167,7 @@ const Register = () => {
             {...register('email', { required: true, pattern: REGEXSPS.Email })}
           />
           {errors.email && (
-            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+            <FormFieldErrorSC>{ERR_MSG.REGISTER_USER.EMAIL}</FormFieldErrorSC>
           )}
         </FormField>
         <FormField
@@ -181,10 +192,12 @@ const Register = () => {
             })}
           />
           {errors.password && (
-            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+            <FormFieldErrorSC>
+              {ERR_MSG.REGISTER_USER.PASSWORD}
+            </FormFieldErrorSC>
           )}
         </FormField>
-        l
+
         <Button
           primary
           isWide
@@ -201,11 +214,6 @@ const Register = () => {
           Already have an account? <Link to="/login">Sign In</Link>
         </p>
       </footer>
-      {responseData ? JSON.stringify(responseData, null, 2) : null}
-
-      <button type="button" onClick={refresh}>
-        Test Refresh
-      </button>
     </AuthWrapSC>
   );
 };

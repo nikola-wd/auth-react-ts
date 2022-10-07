@@ -5,3 +5,8 @@ export type RegisterUserParams = {
   lastName: string;
   password: string;
 };
+
+export type LoginUserParams = {
+  email: string;
+  password: string;
+};

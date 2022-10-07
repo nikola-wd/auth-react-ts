@@ -1,36 +1,83 @@
-import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
-import FormField from '../../components/FormField/FormField';
+import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import React, { useState } from 'react';
-import { FormFieldWrap } from '../../styles/FormFieldWrap';
-import { InputSC } from '../../components/Input/InputSC';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import jwt_decode from 'jwt-decode';
+
+import FormField from '../../components/FormField/FormField';
+import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
-import { Link } from 'react-router-dom';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
+import { setAuthInfo } from '../../store/slices/authSlice';
+import { ERR_MSG } from '../../utils/ERR_MSG';
+import { postLoginUser } from '../../utils/api';
+import { HttpStatus } from '../../utils/http-status.enum';
 
 type Inputs = {
-  username: string;
+  username?: string;
   email: string;
   password: string;
 };
 
 const Login = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [formData, setFormData] = useState<null | Inputs>(null);
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname || '/';
+
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
+
+  useEffect(() => {
+    if (formData) {
+      setLoading(true);
+
+      console.log('SHOULD FETCH NOW');
+      const controller = new AbortController();
+
+      const tryLogin = async () => {
+        try {
+          const res = await postLoginUser(formData, {
+            signal: controller.signal,
+          });
+
+          if (res.status !== HttpStatus.OK) {
+            throw new Error('Bad Request');
+          }
+
+          const { access_token } = res.data;
+          let decoded_AT: { email: string; username: string } =
+            jwt_decode(access_token);
+          const { email, username } = decoded_AT;
+
+          dispatch(setAuthInfo({ user: { email, username }, access_token }));
+          navigate(from, { replace: true });
+        } catch (err) {
+          console.log('ERRORRRRR: ', err);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      tryLogin();
+
+      return () => {
+        controller.abort();
+      };
+    }
+  }, [dispatch, formData, from, navigate]);
+
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
-    setLoading(true);
+    setFormData(data);
   };
-
-  console.log(watch('username')); // watch input value by passing the name of it
-
-  // TODO: Temp, remove
-  const [loading, setLoading] = useState<boolean>(false);
 
   return (
     <AuthWrapSC>
@@ -45,13 +92,15 @@ const Login = () => {
             type="text"
             id="login_username"
             {...register('username', {
-              required: true,
+              // required: true,
               minLength: 3,
               pattern: REGEXSPS.Username,
             })}
           />
           {errors.username && (
-            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+            <FormFieldErrorSC>
+              {ERR_MSG.REGISTER_USER.USERNAME}
+            </FormFieldErrorSC>
           )}
         </FormField>
         <FormField id="#login_email" label="Email Address" error={errors.email}>
@@ -61,7 +110,7 @@ const Login = () => {
             {...register('email', { required: true, pattern: REGEXSPS.Email })}
           />
           {errors.email && (
-            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+            <FormFieldErrorSC>{ERR_MSG.REGISTER_USER.EMAIL}</FormFieldErrorSC>
           )}
         </FormField>
         <FormField
@@ -85,15 +134,11 @@ const Login = () => {
             })}
           />
           {errors.password && (
-            <FormFieldErrorSC>This field is required</FormFieldErrorSC>
+            <FormFieldErrorSC>
+              {ERR_MSG.REGISTER_USER.PASSWORD}
+            </FormFieldErrorSC>
           )}
         </FormField>
-
-        {/* <input {...register('username', { required: true })} />
-        <FormField id="login_password" type="password">
-          Password &nbsp;
-          <small>(Forgot Password?)</small>
-        </FormField> */}
 
         <Button
           primary

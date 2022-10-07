@@ -1,20 +1,22 @@
-import { ComponentStory, ComponentMeta } from '@storybook/react';
-import Header from './Header';
+// import { ComponentStory, ComponentMeta } from '@storybook/react';
+// import Header from './Header';
 
-export default {
-  title: 'App/Header',
-  component: Header,
-} as ComponentMeta<typeof Header>;
+// export default {
+//   title: 'App/Header',
+//   component: Header,
+// } as ComponentMeta<typeof Header>;
 
-const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
+// const Template: ComponentStory<typeof Header> = (args) => <Header {...args} />;
 
-export const LoggedIn = Template.bind({});
+// export const LoggedIn = Template.bind({});
 
-LoggedIn.args = {
-  user: {
-    firstName: 'John',
-  },
-};
+// LoggedIn.args = {
+//   user: {
+//     firstName: 'John',
+//   },
+// };
 
-export const LoggedOut = Template.bind({});
-LoggedOut.args = {};
+// export const LoggedOut = Template.bind({});
+// LoggedOut.args = {};
+
+export const Header = () => <div>Pageee</div>;
