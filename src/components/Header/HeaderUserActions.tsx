@@ -1,17 +1,15 @@
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
+import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { logOut } from '../../store/slices/authSlice';
-import type { RootState } from '../../store/store';
 import { ButtonSC } from '../../styles/ButtonSC';
-import { getLogoutUser } from '../../utils/api';
 import { HttpStatus } from '../../utils/http-status.enum';
 import Dropdown from '../Dropdown/Dropdown';
 import Avatar from '../svg/Avatar';
 
 const HeaderUserActions = () => {
-  const access_token = useSelector(
-    (state: RootState) => state.auth.access_token
-  );
+  const axiosPrivate = useAxiosPrivate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -22,11 +20,7 @@ const HeaderUserActions = () => {
     setIsLoading(true);
 
     try {
-      const res = await getLogoutUser({
-        headers: {
-          Authorization: `Bearer ${access_token}`,
-        },
-      });
+      const res = await axiosPrivate.get('/auth/local/logout');
 
       // TODO: Update HttpStatus.OK (200) to a more appropriate one
       console.log(res.status);
@@ -46,23 +40,31 @@ const HeaderUserActions = () => {
   };
 
   return (
-    <Dropdown
-      label={
-        <>
-          Username <Avatar />
-        </>
-      }
-    >
-      <span>test@test.com</span>
-      <ButtonSC
-        primary
-        type="button"
-        onClick={handleLogout}
-        disabled={isLoading}
+    <>
+      <NavLink to="/my-posts">
+        <ButtonSC type="button">My Posts</ButtonSC>
+      </NavLink>
+      <NavLink to="/posts/create">
+        <ButtonSC type="button">TODO: Implement: Create Post</ButtonSC>
+      </NavLink>
+      <Dropdown
+        label={
+          <>
+            Username <Avatar />
+          </>
+        }
       >
-        Logout
-      </ButtonSC>
-    </Dropdown>
+        <span>test@test.com</span>
+        <ButtonSC
+          primary
+          type="button"
+          onClick={handleLogout}
+          disabled={isLoading}
+        >
+          Logout
+        </ButtonSC>
+      </Dropdown>
+    </>
   );
 };
 

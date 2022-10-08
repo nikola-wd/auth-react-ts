@@ -1,7 +1,8 @@
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 
 import type { RootState } from '../../store/store';
+import { ButtonSC } from '../../styles/ButtonSC';
 import { HeaderActionsSC, HeaderSC } from '../../styles/HeaderSC';
 import Logo from '../svg/Logo';
 import HeaderPublicActions from './HeaderPublicActions';
@@ -19,6 +20,10 @@ const Header = () => {
       ) : (
         <Logo />
       )}
+
+      <NavLink to="/posts">
+        <ButtonSC type="button">Posts</ButtonSC>
+      </NavLink>
 
       <HeaderActionsSC>
         {!currentUser ? <HeaderPublicActions /> : <HeaderUserActions />}

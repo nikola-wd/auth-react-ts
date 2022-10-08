@@ -1,26 +1,44 @@
-// import jwt_decode from 'jwt-decode';
+import { useDispatch } from 'react-redux';
+import jwt_decode from 'jwt-decode';
+import { axiosClient } from '../utils/api';
+import { setAuth } from '../store/slices/authSlice';
 
-// import { postRefreshToken } from '../utils/api';
-// import useAuth from './useAuth';
+import { AxiosRequestConfig } from 'axios';
 
-// const useRefreshToken = () => {
-//   const { setAuth } = useAuth();
+type DecodedAT = {
+  email: string;
+  username: string;
+};
 
-//   const refresh = async () => {
-//     // XXX: should sen a cookie with the response access_token, that we should never see in our JS. Should be stored from Nest.js
-//     const response = await postRefreshToken();
+const useRefreshToken = () => {
+  const dispatch = useDispatch();
 
-//     setAuth((prev: any) => {
-//       console.log(JSON.stringify(prev));
-//       console.log(response.data.access_token);
-//       return { ...prev, access_token: response.data.access_token };
-//     });
-//     return response.data.access_token;
-//   };
+  const axiosReqConfig: AxiosRequestConfig = {
+    withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    },
+  };
 
-//   return refresh;
-// };
+  const refresh = async () => {
+    const response = await axiosClient.get(
+      '/auth/local/refresh',
+      axiosReqConfig,
+    );
 
-// export default useRefreshToken;
+    console.log('AXIOS PRIVATE RESPONSE: ', response);
 
-export default {};
+    const { access_token } = response.data;
+
+    const { email, username }: DecodedAT = jwt_decode(access_token);
+
+    console.log('SETTING NEW AT!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    dispatch(setAuth({ user: { email, username }, access_token }));
+
+    return access_token;
+  };
+
+  return refresh;
+};
+
+export default useRefreshToken;

@@ -9,6 +9,7 @@ import Home from './pages/Home/Home';
 import AuthGuard from './guards/AuthGuard';
 import PublicGuard from './guards/PublicGuard';
 import './App.css';
+import Posts from './pages/Posts/Posts';
 
 function App() {
   return (
@@ -18,8 +19,11 @@ function App() {
 
         <main className="main">
           <Routes>
+            <Route path="/posts" element={<Posts />} />
+
             <Route element={<AuthGuard />}>
               <Route path="/" element={<Home />} />
+              <Route path="/my-posts" element={<>To be implemented</>} />
             </Route>
 
             <Route element={<PublicGuard />}>

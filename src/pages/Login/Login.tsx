@@ -9,7 +9,7 @@ import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
-import { setAuthInfo } from '../../store/slices/authSlice';
+import { setAuth } from '../../store/slices/authSlice';
 import { ERR_MSG } from '../../utils/ERR_MSG';
 import { postLoginUser } from '../../utils/api';
 import { HttpStatus } from '../../utils/http-status.enum';
@@ -58,7 +58,7 @@ const Login = () => {
             jwt_decode(access_token);
           const { email, username } = decoded_AT;
 
-          dispatch(setAuthInfo({ user: { email, username }, access_token }));
+          dispatch(setAuth({ user: { email, username }, access_token }));
           navigate(from, { replace: true });
         } catch (err) {
           console.log('ERRORRRRR: ', err);
