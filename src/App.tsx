@@ -4,11 +4,11 @@ import { Route, BrowserRouter, Routes } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-import './App.css';
 import Error404 from './pages/Error/Error404';
 import Home from './pages/Home/Home';
 import AuthGuard from './guards/AuthGuard';
 import PublicGuard from './guards/PublicGuard';
+import './App.css';
 
 function App() {
   return (

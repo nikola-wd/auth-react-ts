@@ -35,7 +35,11 @@ export const postLoginUser = async (
  * */
 
 // Sends the GET request to logout the logged in user
-export const postLogoutUser = async (config?: AxiosRequestConfig) =>
-  axiosClient.post(`/auth/local/signin`, null, config);
+// Expects header Authorization (or authorization): Bearer access_token
+// TODO: Take into account that at might expire, so always first try to refresh it.
+// If it throws exception, logout anyway?
+export const getLogoutUser = async (config?: AxiosRequestConfig) =>
+  axiosClient.get(`/auth/local/logout`, config);
 
 // ________________________________________________________
+// TODO: create a helper tryRequest fn that sends access_token first, and if it doesn't work, sends refresh req, and then if access doesn't work -> fail. Also, if access_token is not in memory (that may be solved with persist?), first do the refresh and then try

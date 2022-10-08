@@ -57,6 +57,9 @@ export const ButtonSC = styled.button<{
     width: 15px;
     height: 15px;
     margin-left: 6px;
-    animation: spin 2s infinite linear;
+
+    &.spinner {
+      animation: spin 2s infinite linear;
+    }
   }
 `;

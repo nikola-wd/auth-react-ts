@@ -3,3 +3,4 @@
 [] Clean up code and reorganize
 [] Make it possible to login with either username or email
 [] JSON encode first and last name on the backend
+[] Should access_token be saved as http only cookie or that's not the best practice

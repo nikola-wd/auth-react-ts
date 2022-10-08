@@ -4,6 +4,7 @@ const Spinner = () => {
       width="14px"
       height="14px"
       viewBox="0 0 14 14"
+      className="spinner"
       xmlns="http://www.w3.org/2000/svg"
     >
       <g fill="none" fillRule="evenodd">

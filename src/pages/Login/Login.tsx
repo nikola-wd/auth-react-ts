@@ -119,7 +119,9 @@ const Login = () => {
             <>
               Password{' '}
               <small>
-                <Link to="/register">Forgot Password?</Link>
+                <Link to="/register" tabIndex={-1}>
+                  Forgot Password?
+                </Link>
               </small>
             </>
           }
