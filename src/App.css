@@ -23,6 +23,10 @@ main.main {
   color: #fff;
 }
 
+main.main p {
+  margin-bottom: 15px;
+}
+
 h2 {
   position: relative;
   color: #fff;
