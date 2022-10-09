@@ -13,6 +13,8 @@ import TryPersistLogin from './components/auth/TryPersistLogin/TryPersistLogin';
 
 import './App.css';
 
+// TODO: Fix. When logged in, and then going to login screen, it doesn't redirect but stays there, and doesn't TryPersist or try get auth state correctly
+
 function App() {
   return (
     <div className="App">
