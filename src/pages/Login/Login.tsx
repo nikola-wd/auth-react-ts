@@ -13,6 +13,7 @@ import { setAuth } from '../../store/slices/authSlice';
 import { ERR_MSG } from '../../utils/ERR_MSG';
 import { postLoginUser } from '../../utils/api';
 import { HttpStatus } from '../../utils/http-status.enum';
+// import usePersist from '../../hooks/usePersist';
 
 type Inputs = {
   username?: string;
@@ -23,6 +24,7 @@ type Inputs = {
 const Login = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<null | Inputs>(null);
+  // const [_, setPersist] = usePersist()
 
   const navigate = useNavigate();
   const location = useLocation();

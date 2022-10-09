@@ -3,6 +3,7 @@ import Spinner from '../svg/Spinner';
 
 interface ButtonProps {
   primary?: boolean;
+  danger?: boolean;
   isWide?: boolean;
   size?: 'small' | 'large';
   type?: 'button' | 'submit';
@@ -12,6 +13,7 @@ interface ButtonProps {
 
 const Button = ({
   primary = false,
+  danger = false,
   isWide = false,
   size,
   children,
@@ -23,6 +25,7 @@ const Button = ({
     <ButtonSC
       type={type}
       primary={primary}
+      danger={danger}
       isWide={isWide}
       size={size}
       onClick={onClick}

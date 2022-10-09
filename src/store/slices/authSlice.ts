@@ -8,16 +8,21 @@ type UserStateType = {
 
 type AccessTokenType = string | null;
 
-type AuthStateType = {
+type AuthStateAuthType = {
   access_token: AccessTokenType;
   user: UserStateType;
+  tryingLoginPersist?: boolean;
 };
 
 const authSlice = createSlice({
   name: 'auth',
-  initialState: { access_token: null, user: null } as AuthStateType,
+  initialState: {
+    access_token: null,
+    user: null,
+    tryingLoginPersist: false,
+  } as AuthStateAuthType,
   reducers: {
-    setAuth: (state, action: PayloadAction<AuthStateType>) => {
+    setAuth: (state, action: PayloadAction<AuthStateAuthType>) => {
       const { access_token, user } = action.payload;
       state.access_token = access_token;
       state.user = user;
@@ -26,9 +31,15 @@ const authSlice = createSlice({
       state.access_token = null;
       state.user = null;
     },
+    setTryingLoginPersist: (
+      state,
+      { payload: isTryingLoginPersist }: PayloadAction<boolean>,
+    ) => {
+      state.tryingLoginPersist = isTryingLoginPersist;
+    },
   },
 });
 
-export const { setAuth, logOut } = authSlice.actions;
+export const { setAuth, logOut, setTryingLoginPersist } = authSlice.actions;
 
 export default authSlice.reducer;

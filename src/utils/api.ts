@@ -6,7 +6,11 @@ import { LoginUserParams, RegisterUserParams } from '../types';
 // const API_BASE = process.env.REACT_APP_API_BASE;
 
 // Used for testing when served by Nest.js from the dist/client/build folder
-const API_BASE = 'api/v1';
+let API_BASE = 'api/v1';
+
+if (process.env.REACT_APP_ENVIRONMENT === 'development') {
+  API_BASE = process.env.REACT_APP_API_BASE as string;
+}
 
 export const axiosClient = axios.create({
   baseURL: API_BASE,

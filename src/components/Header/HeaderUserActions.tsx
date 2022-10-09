@@ -45,7 +45,7 @@ const HeaderUserActions = () => {
         <ButtonSC type="button">My Posts</ButtonSC>
       </NavLink>
       <NavLink to="/posts/create">
-        <ButtonSC type="button">TODO: Implement: Create Post</ButtonSC>
+        <ButtonSC type="button">TODO: Create Post</ButtonSC>
       </NavLink>
       <Dropdown
         label={

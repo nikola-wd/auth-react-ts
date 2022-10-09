@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const ButtonSC = styled.button<{
   primary?: boolean;
+  danger?: boolean;
   isWide?: boolean;
   size?: undefined | 'small' | 'large';
   type?: 'button' | 'submit';
@@ -14,6 +15,7 @@ export const ButtonSC = styled.button<{
   border-radius: 4px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+
   ${(props) => {
     // medium is default
     let sizeCSS = `
@@ -36,12 +38,17 @@ export const ButtonSC = styled.button<{
     }
     return sizeCSS;
   }}
+
+  ${(props) => {
+    if (props?.primary) return `background: #555ab9;`;
+    else if (props?.danger) return `background: #ee6783;`;
+    else return `background: #555555`;
+  }}
+
   color: #fff;
   cursor: pointer;
   border: 0;
   transition: all 0.2s ease-in-out;
-
-  background: ${(props) => (props?.primary ? '#555ab9' : '#555555')};
 
   ${(props) =>
     props?.isWide &&
@@ -57,9 +64,7 @@ export const ButtonSC = styled.button<{
     width: 15px;
     height: 15px;
     margin-left: 6px;
-
-    &.spinner {
-      animation: spin 2s infinite linear;
-    }
   }
 `;
+
+// TODO: Fix header buttons colors when logged in

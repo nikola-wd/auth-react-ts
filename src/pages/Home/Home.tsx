@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useSelector } from 'react-redux';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
@@ -11,7 +10,6 @@ const Home = () => {
 
   const handleTest = async () => {
     try {
-      // const res = await axiosPrivate.get('/auth/local/refresh');
       const res = await axiosPrivate.get('/posts/test-cookie');
 
       console.log(res);

@@ -8,8 +8,10 @@ import Error404 from './pages/Error/Error404';
 import Home from './pages/Home/Home';
 import AuthGuard from './guards/AuthGuard';
 import PublicGuard from './guards/PublicGuard';
-import './App.css';
 import Posts from './pages/Posts/Posts';
+import TryPersistLogin from './components/auth/TryPersistLogin/TryPersistLogin';
+
+import './App.css';
 
 function App() {
   return (
@@ -20,12 +22,12 @@ function App() {
         <main className="main">
           <Routes>
             <Route path="/posts" element={<Posts />} />
-
-            <Route element={<AuthGuard />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/my-posts" element={<>To be implemented</>} />
+            <Route element={<TryPersistLogin />}>
+              <Route element={<AuthGuard />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/my-posts" element={<>To be implemented</>} />
+              </Route>
             </Route>
-
             <Route element={<PublicGuard />}>
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

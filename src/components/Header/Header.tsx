@@ -7,13 +7,19 @@ import { HeaderActionsSC, HeaderSC } from '../../styles/HeaderSC';
 import Logo from '../svg/Logo';
 import HeaderPublicActions from './HeaderPublicActions';
 import HeaderUserActions from './HeaderUserActions';
+import Spinner from '../svg/Spinner';
+
+// TODO: improve Header TryPersistLogic
 
 const Header = () => {
   const currentUser = useSelector((state: RootState) => state.auth.user);
+  const tryingLoginPersist = useSelector(
+    (state: RootState) => state.auth.tryingLoginPersist,
+  );
 
   return (
     <HeaderSC>
-      {currentUser ? (
+      {currentUser && !tryingLoginPersist ? (
         <Link to="/">
           <Logo />
         </Link>
@@ -21,12 +27,18 @@ const Header = () => {
         <Logo />
       )}
 
-      <NavLink to="/posts">
-        <ButtonSC type="button">Posts</ButtonSC>
-      </NavLink>
-
       <HeaderActionsSC>
-        {!currentUser ? <HeaderPublicActions /> : <HeaderUserActions />}
+        {tryingLoginPersist ? (
+          <Spinner />
+        ) : (
+          <>
+            <NavLink to="/posts">
+              <ButtonSC type="button">Posts</ButtonSC>
+            </NavLink>
+            {/* TODO: Fix login buttons blinking */}
+            {!currentUser ? <HeaderPublicActions /> : <HeaderUserActions />}
+          </>
+        )}
       </HeaderActionsSC>
     </HeaderSC>
   );

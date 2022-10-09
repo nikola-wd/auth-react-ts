@@ -9,7 +9,7 @@ import useRefreshToken from './useRefreshToken';
 // TODO: Maybe I need to update the authSlice with the new AT here as well
 
 const useAxiosPrivate = () => {
-  const refresh = useRefreshToken();
+  const [refresh] = useRefreshToken();
   const currentAT = useSelector((state: RootState) => state.auth.access_token);
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const useAxiosPrivate = () => {
         ) {
           prevRequest.sent = true;
           // Get the new access token
-          const newAccessToken = await refresh();
+          const { access_token: newAccessToken } = await refresh();
 
           console.log('newAccessToken ', newAccessToken);
 
@@ -65,5 +65,3 @@ const useAxiosPrivate = () => {
 };
 
 export default useAxiosPrivate;
-
-// export default {};

@@ -48,3 +48,7 @@ h2:before {
     transform: rotate(360deg);
   }
 }
+
+svg.spinner {
+  animation: spin 2s infinite linear;
+}
