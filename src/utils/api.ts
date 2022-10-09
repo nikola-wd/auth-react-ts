@@ -14,6 +14,9 @@ if (process.env.REACT_APP_ENVIRONMENT === 'development') {
 
 export const axiosClient = axios.create({
   baseURL: API_BASE,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 
   // Research what with credentials does
   // withCredentials: true
@@ -65,12 +68,3 @@ export const getAllPosts = async () => axiosClient.get('/posts');
 /** *******************************************************
  * END: POSTS API
  * */
-
-// For requests that need the AT http only cookie
-export const axiosPrivateClient = axios.create({
-  baseURL: API_BASE,
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  withCredentials: true,
-});

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 
 import type { RootState } from '../store/store';
-import { axiosPrivateClient } from '../utils/api';
+import { axiosClient } from '../utils/api';
 import { HttpStatus } from '../utils/http-status.enum';
 import useRefreshToken from './useRefreshToken';
 
@@ -13,7 +13,7 @@ const useAxiosPrivate = () => {
   const currentAT = useSelector((state: RootState) => state.auth.access_token);
 
   useEffect(() => {
-    const requestIntercept = axiosPrivateClient.interceptors.request.use(
+    const requestIntercept = axiosClient.interceptors.request.use(
       (config) => {
         // Here we know it's not a retry (first attempt)
         if (!config.headers!['Authorization']) {
@@ -25,7 +25,7 @@ const useAxiosPrivate = () => {
       (error) => Promise.reject(error),
     );
 
-    const responseIntercept = axiosPrivateClient.interceptors.response.use(
+    const responseIntercept = axiosClient.interceptors.response.use(
       // token didn't expire, and we did get a good response
       (response) => response,
       // token expired
@@ -46,7 +46,7 @@ const useAxiosPrivate = () => {
 
           prevRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
           // do the request again with the new AT
-          return axiosPrivateClient(prevRequest);
+          return axiosClient(prevRequest);
         }
 
         // TODO: Test reject by making RT live shorter. In that case, maybe rediret to login, but remember the previous route so that the user after login gets on the same page again
@@ -56,12 +56,12 @@ const useAxiosPrivate = () => {
 
     // clean up interceptors
     return () => {
-      axiosPrivateClient.interceptors.request.eject(requestIntercept);
-      axiosPrivateClient.interceptors.response.eject(responseIntercept);
+      axiosClient.interceptors.request.eject(requestIntercept);
+      axiosClient.interceptors.response.eject(responseIntercept);
     };
   }, [currentAT, refresh]);
 
-  return axiosPrivateClient;
+  return axiosClient;
 };
 
 export default useAxiosPrivate;

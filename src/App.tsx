@@ -12,6 +12,7 @@ import Posts from './pages/Posts/Posts';
 import TryPersistLogin from './components/auth/TryPersistLogin/TryPersistLogin';
 
 import './App.css';
+import MyPosts from './pages/MyPosts/MyPosts';
 
 // TODO: Fix. When logged in, and then going to login screen, it doesn't redirect but stays there, and doesn't TryPersist or try get auth state correctly
 
@@ -27,7 +28,7 @@ function App() {
             <Route element={<TryPersistLogin />}>
               <Route element={<AuthGuard />}>
                 <Route path="/" element={<Home />} />
-                <Route path="/my-posts" element={<>To be implemented</>} />
+                <Route path="/my-posts" element={<MyPosts />} />
               </Route>
             </Route>
             <Route element={<PublicGuard />}>
