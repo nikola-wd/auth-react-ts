@@ -1,14 +1,14 @@
-import { formatRelative, subDays } from 'date-fns';
 import { Link } from 'react-router-dom';
 
 // TODO: Move data fns to helpers
 
 import type { PostByUser } from '../../pages/MyPosts/MyPosts';
 import {
-  AdminPostCardDateSC,
   AdminPostCardSC,
   AdminPostCardTitleSC,
 } from '../../styles/AdminPostCardSC';
+import { PostDateSC } from '../../styles/PostDateSC';
+import { getRelDate } from '../../utils/getRelDate';
 import Edit from '../svg/Edit';
 
 // TODO: if created at and updated at is the same, only show created at
@@ -27,18 +27,18 @@ const AdminPostCard = ({
           <Link to={`/posts/${slug}`}>{title}</Link>
         </AdminPostCardTitleSC>
 
-        <AdminPostCardDateSC>
+        <PostDateSC>
           <>
-            <strong>Created At: </strong>
-            {formatRelative(subDays(new Date(createdAt), 3), new Date())}
+            <strong>Created At:</strong>&nbsp;
+            {getRelDate(createdAt)}
           </>
-        </AdminPostCardDateSC>
-        <AdminPostCardDateSC>
+        </PostDateSC>
+        <PostDateSC>
           <>
-            <strong>Updated At: </strong>
-            {formatRelative(subDays(new Date(updatedAt), 3), new Date())}
+            <strong>Updated At:</strong>&nbsp;
+            {getRelDate(updatedAt)}
           </>
-        </AdminPostCardDateSC>
+        </PostDateSC>
       </div>
 
       <Link to={`./edit/${id}`}>

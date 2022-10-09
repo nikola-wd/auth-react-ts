@@ -1,5 +1,5 @@
 // import { Navigate, Route, BrowserRouter, Routes } from 'react-router-dom';
-import { Route, BrowserRouter, Routes } from 'react-router-dom';
+import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import Login from './pages/Login/Login';
@@ -13,6 +13,7 @@ import TryPersistLogin from './components/auth/TryPersistLogin/TryPersistLogin';
 
 import './App.css';
 import MyPosts from './pages/MyPosts/MyPosts';
+import PostPublic from './pages/Posts/PostPublic';
 
 // TODO: Fix. When logged in, and then going to login screen, it doesn't redirect but stays there, and doesn't TryPersist or try get auth state correctly
 
@@ -25,6 +26,7 @@ function App() {
         <main className="main">
           <Routes>
             <Route path="/posts" element={<Posts />} />
+            <Route path="/posts/:slug" element={<PostPublic />} />
             <Route element={<TryPersistLogin />}>
               <Route element={<AuthGuard />}>
                 <Route path="/" element={<Home />} />
@@ -36,6 +38,7 @@ function App() {
               <Route path="/register" element={<Register />} />
             </Route>
             {/* <Route path="/" element={<Navigate replace to="/login" />} /> */}
+            {/* <Route path="*" element={<Error404 />} /> */}
             <Route path="*" element={<Error404 />} />
           </Routes>
         </main>

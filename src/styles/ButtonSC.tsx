@@ -68,3 +68,5 @@ export const ButtonSC = styled.button<{
 `;
 
 // TODO: Fix header buttons colors when logged in
+
+// SC useful: https://blog.pawsible.in.th/10-useful-tips-for-styled-components-b7710b021e6a

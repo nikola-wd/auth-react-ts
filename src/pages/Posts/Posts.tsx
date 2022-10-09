@@ -4,12 +4,14 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import type { RootState } from '../../store/store';
+import { PostDateSC } from '../../styles/PostDateSC';
 import { getAllPosts } from '../../utils/api';
+import { getRelDate } from '../../utils/getRelDate';
 
 type Post = {
   id: number;
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: Date;
+  updatedAt: Date;
   slug: string;
   title: string;
   content: string;
@@ -67,9 +69,20 @@ const Posts = () => {
             </Link>
             <p style={{ marginBlock: '10px' }}>{post.content}</p>
             {/* TODO: date fns */}
-            <time>{post.createdAt}</time>
-            <strong>Author: </strong> {post?.user?.firstName}{' '}
-            {post?.user?.lastName}
+            <PostDateSC>
+              <>
+                <strong>Created At</strong>&nbsp; {getRelDate(post.createdAt)}
+              </>
+            </PostDateSC>
+            <PostDateSC>
+              <>
+                <strong>Updated At</strong>&nbsp; {getRelDate(post.updatedAt)}
+              </>
+            </PostDateSC>
+            <p>
+              <strong>Author: </strong> {post?.user?.firstName}{' '}
+              {post?.user?.lastName}
+            </p>
           </div>
         ))}
     </PageWrap>
@@ -77,3 +90,5 @@ const Posts = () => {
 };
 
 export default Posts;
+
+// TODO: if updated at is the same as created at, only show created at
