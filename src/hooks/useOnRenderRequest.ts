@@ -21,10 +21,14 @@ const useOnRenderRequest = <T>({
   const [isFinished, setIsFinished] = useState<boolean>(false);
 
   useEffect(() => {
+    const controller = new AbortController();
+
     if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
       console.log(
         'Should fetch in useOnRenderHook here________________________________________',
       );
+
+      config.signal = controller.signal;
 
       (async () => {
         try {
@@ -57,7 +61,9 @@ const useOnRenderRequest = <T>({
     }
 
     return () => {
+      // TODO: Maybe abort controller should be added inside axiosPrivate
       effectRan.current = true;
+      controller.abort();
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
