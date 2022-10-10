@@ -1,4 +1,3 @@
-import { useDispatch } from 'react-redux';
 import { axiosClient } from '../utils/api';
 import { setAuth, setTryingLoginPersist } from '../store/slices/authSlice';
 
@@ -7,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { HttpStatus } from '../utils/http-status.enum';
 import { RefreshReturnData, UseRefreshTokenErrorType } from './types';
 import { decode_at } from '../utils/decode_at';
+import { useAppDispatch } from '../store/hooks';
 
 const axiosReqConfig: AxiosRequestConfig = {
   withCredentials: true,
@@ -22,7 +22,7 @@ const useRefreshToken = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [error, setError] = useState<UseRefreshTokenErrorType>({});
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (!isLoading && (isSuccess || isError)) {

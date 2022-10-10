@@ -32,6 +32,7 @@ const authSlice = createSlice({
 export const { setAuth, logOut, setTryingLoginPersist } = authSlice.actions;
 
 export const getCurrentUser = (state: RootState) => state.auth.user;
+export const getCurrentToken = (state: RootState) => state.auth.access_token;
 export const getTryinLoginPersist = (state: RootState) =>
   state.auth.tryingLoginPersist;
 

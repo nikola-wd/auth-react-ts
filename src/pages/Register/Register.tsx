@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -15,13 +14,14 @@ import { ERR_MSG } from '../../utils/ERR_MSG';
 import { HttpStatus } from '../../utils/http-status.enum';
 import { decode_at } from '../../utils/decode_at';
 import { RegisterUserInputs } from './types';
+import { useAppDispatch } from '../../store/hooks';
 
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     register,

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 
 import FormField from '../../components/FormField/FormField';
 import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
@@ -14,6 +13,7 @@ import { postLoginUser } from '../../utils/api';
 import { HttpStatus } from '../../utils/http-status.enum';
 import { decode_at } from '../../utils/decode_at';
 import { LoginUserInputs } from './types';
+import { useAppDispatch } from '../../store/hooks';
 // import usePersist from '../../hooks/usePersist';
 
 const Login = () => {
@@ -25,7 +25,7 @@ const Login = () => {
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const {
     register,

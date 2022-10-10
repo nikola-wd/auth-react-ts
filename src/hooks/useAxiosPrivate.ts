@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
+import { useAppSelector } from '../store/hooks';
+import { getCurrentToken } from '../store/slices/authSlice';
 
-import type { RootState } from '../store/store';
 import { axiosClient } from '../utils/api';
 import { HttpStatus } from '../utils/http-status.enum';
 import useRefreshToken from './useRefreshToken';
@@ -10,7 +10,7 @@ import useRefreshToken from './useRefreshToken';
 
 const useAxiosPrivate = () => {
   const [refresh] = useRefreshToken();
-  const currentAT = useSelector((state: RootState) => state.auth.access_token);
+  const currentAT = useAppSelector(getCurrentToken);
 
   useEffect(() => {
     const requestIntercept = axiosClient.interceptors.request.use(

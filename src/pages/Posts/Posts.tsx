@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PageWrap from '../../components/PageWrap/PageWrap';
+import { useAppSelector } from '../../store/hooks';
 import { getCurrentUser } from '../../store/slices/authSlice';
 import { PostDateSC } from '../../styles/PostDateSC';
 import { getAllPosts } from '../../utils/api';
@@ -10,7 +10,7 @@ import { getRelDate } from '../../utils/getRelDate';
 import { Post } from './types';
 
 const Posts = () => {
-  const currentUser = useSelector(getCurrentUser);
+  const currentUser = useAppSelector(getCurrentUser);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [posts, setPosts] = useState<Post[] | []>([]);

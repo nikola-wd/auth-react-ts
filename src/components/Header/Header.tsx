@@ -1,7 +1,5 @@
-import { useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 
-import type { RootState } from '../../store/store';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { HeaderActionsSC, HeaderSC } from '../../styles/HeaderSC';
 import Logo from '../svg/Logo';
@@ -12,12 +10,13 @@ import {
   getCurrentUser,
   getTryinLoginPersist,
 } from '../../store/slices/authSlice';
+import { useAppSelector } from '../../store/hooks';
 
 // TODO: improve Header TryPersistLogic
 
 const Header = () => {
-  const currentUser = useSelector(getCurrentUser);
-  const tryingLoginPersist = useSelector(getTryinLoginPersist);
+  const currentUser = useAppSelector(getCurrentUser);
+  const tryingLoginPersist = useAppSelector(getTryinLoginPersist);
 
   return (
     <HeaderSC>

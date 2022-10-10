@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState, ReactElement } from 'react';
-import { useSelector } from 'react-redux';
 import { Outlet, Link } from 'react-router-dom';
 
 import usePersist from '../../../hooks/usePersist';
 import useRefreshToken from '../../../hooks/useRefreshToken';
-import { setAuth } from '../../../store/slices/authSlice';
-import type { RootState } from '../../../store/store';
+import { useAppSelector } from '../../../store/hooks';
+import { getCurrentToken, setAuth } from '../../../store/slices/authSlice';
 import Button from '../../Button/Button';
 import Spinner from '../../svg/Spinner';
 
 // TODO: useRefreshMutation (check github)
 
 const TryPersistLogin = () => {
-  const token = useSelector((state: RootState) => state.auth.access_token);
+  const token = useAppSelector(getCurrentToken);
 
   const [persist] = usePersist();
   const effectRan = useRef<boolean>(false);

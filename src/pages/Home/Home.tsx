@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
 import PageWrap from '../../components/PageWrap/PageWrap';
+import { useAppSelector } from '../../store/hooks';
 import { getCurrentUser } from '../../store/slices/authSlice';
 
 const Home = () => {
-  const currentUser = useSelector(getCurrentUser);
+  const currentUser = useAppSelector(getCurrentUser);
 
   return (
     <PageWrap pageTitle="Home">

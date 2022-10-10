@@ -1,7 +1,7 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import { useAppDispatch } from '../../store/hooks';
 import { logOut } from '../../store/slices/authSlice';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { HttpStatus } from '../../utils/http-status.enum';
@@ -13,7 +13,7 @@ const HeaderUserActions = () => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // TODO: If access_token is missing in memory, do the refresh first
   const handleLogout = async () => {
     console.log('Logout!!!!!!!!!');
