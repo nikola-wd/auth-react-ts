@@ -3,13 +3,15 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { AuthStateAuthType } from './types';
 import { RootState } from '../store';
 
+const initialState: AuthStateAuthType = {
+  access_token: null,
+  user: null,
+  tryingLoginPersist: false,
+};
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    access_token: null,
-    user: null,
-    tryingLoginPersist: false,
-  } as AuthStateAuthType,
+  initialState,
   reducers: {
     setAuth: (state, action: PayloadAction<AuthStateAuthType>) => {
       const { access_token, user } = action.payload;
