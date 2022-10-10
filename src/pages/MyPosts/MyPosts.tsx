@@ -1,9 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import AdminPostCard from '../../components/AdminPostCard/AdminPostCard';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { ButtonSC } from '../../styles/ButtonSC';
+import { PlgSC } from '../../styles/PLgSC';
 
 export type PostByUser = {
   id: number;
@@ -92,7 +94,16 @@ const MyPosts = () => {
     }
   }
 
-  return <PageWrap pageTitle="My Posts">{content}</PageWrap>;
+  return (
+    <PageWrap pageTitle="My Posts">
+      <PlgSC>
+        <Link to="create" className="c-white">
+          Create a new post?
+        </Link>
+      </PlgSC>
+      {content}
+    </PageWrap>
+  );
 };
 
 export default MyPosts;

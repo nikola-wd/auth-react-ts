@@ -14,6 +14,8 @@ import TryPersistLogin from './components/auth/TryPersistLogin/TryPersistLogin';
 import './App.css';
 import MyPosts from './pages/MyPosts/MyPosts';
 import PostPublic from './pages/Posts/PostPublic';
+import CreatePost from './pages/MyPosts/CreatePost';
+import EditPost from './pages/MyPosts/EditPost';
 
 // TODO: Fix. When logged in, and then going to login screen, it doesn't redirect but stays there, and doesn't TryPersist or try get auth state correctly
 
@@ -25,17 +27,23 @@ function App() {
 
         <main className="main">
           <Routes>
-            <Route path="/posts" element={<Posts />} />
-            <Route path="/posts/:slug" element={<PostPublic />} />
+            <Route path="posts">
+              <Route index element={<Posts />} />
+              <Route path=":slug" element={<PostPublic />} />
+            </Route>
             <Route element={<TryPersistLogin />}>
               <Route element={<AuthGuard />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/my-posts" element={<MyPosts />} />
+                <Route index element={<Home />} />
+                <Route path="my-posts">
+                  <Route index element={<MyPosts />} />
+                  <Route path="create" element={<CreatePost />} />
+                  <Route path=":postId" element={<EditPost />} />
+                </Route>
               </Route>
             </Route>
             <Route element={<PublicGuard />}>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+              <Route path="login" element={<Login />} />
+              <Route path="register" element={<Register />} />
             </Route>
             {/* <Route path="/" element={<Navigate replace to="/login" />} /> */}
             {/* <Route path="*" element={<Error404 />} /> */}

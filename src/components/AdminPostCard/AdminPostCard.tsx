@@ -41,7 +41,7 @@ const AdminPostCard = ({
         </PostDateSC>
       </div>
 
-      <Link to={`./edit/${id}`}>
+      <Link to={`./${id}`}>
         <Edit />
       </Link>
     </AdminPostCardSC>

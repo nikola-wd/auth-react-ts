@@ -60,7 +60,7 @@ const PostPublic = () => {
     content = (
       <div>
         <Link to="/posts" className="tdn">
-          <ButtonSC>Back to all posts</ButtonSC>
+          <ButtonSC>All Posts</ButtonSC>
         </Link>
         <PlgSC>{post.content}</PlgSC>
 

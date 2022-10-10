@@ -31,6 +31,10 @@ main.main p {
   text-decoration: none;
 }
 
+.c-white {
+  color: white;
+}
+
 h2 {
   position: relative;
   color: #fff;
