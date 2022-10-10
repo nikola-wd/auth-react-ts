@@ -3,28 +3,14 @@ import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import PageWrap from '../../components/PageWrap/PageWrap';
-import type { RootState } from '../../store/store';
+import { getCurrentUser } from '../../store/slices/authSlice';
 import { PostDateSC } from '../../styles/PostDateSC';
 import { getAllPosts } from '../../utils/api';
 import { getRelDate } from '../../utils/getRelDate';
-
-type Post = {
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
-  slug: string;
-  title: string;
-  content: string;
-  userId: number;
-  user?: {
-    id?: number;
-    firstName?: string;
-    lastName?: string;
-  } | null;
-};
+import { Post } from './types';
 
 const Posts = () => {
-  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const currentUser = useSelector(getCurrentUser);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [posts, setPosts] = useState<Post[] | []>([]);

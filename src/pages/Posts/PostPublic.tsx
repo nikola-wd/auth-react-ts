@@ -8,17 +8,7 @@ import { PlgSC } from '../../styles/PLgSC';
 import { PostDateSC } from '../../styles/PostDateSC';
 import { getRelDate } from '../../utils/getRelDate';
 import Error404 from '../Error/Error404';
-
-type PostPublicType = {
-  title: string;
-  content: string;
-  createdAt: Date;
-  updatedAt: Date;
-  user: {
-    firstName: string;
-    lastName: string;
-  };
-};
+import { PostPublicType } from './types';
 
 const PostPublic = () => {
   const { slug } = useParams();

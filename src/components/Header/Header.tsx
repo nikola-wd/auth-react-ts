@@ -8,14 +8,16 @@ import Logo from '../svg/Logo';
 import HeaderPublicActions from './HeaderPublicActions';
 import HeaderUserActions from './HeaderUserActions';
 import Spinner from '../svg/Spinner';
+import {
+  getCurrentUser,
+  getTryinLoginPersist,
+} from '../../store/slices/authSlice';
 
 // TODO: improve Header TryPersistLogic
 
 const Header = () => {
-  const currentUser = useSelector((state: RootState) => state.auth.user);
-  const tryingLoginPersist = useSelector(
-    (state: RootState) => state.auth.tryingLoginPersist,
-  );
+  const currentUser = useSelector(getCurrentUser);
+  const tryingLoginPersist = useSelector(getTryinLoginPersist);
 
   return (
     <HeaderSC>

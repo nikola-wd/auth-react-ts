@@ -1,10 +1,10 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../store/store';
+import { getCurrentUser } from '../store/slices/authSlice';
 
 const PublicGuard = () => {
   const location = useLocation();
-  const currentUser = useSelector((state: RootState) => state.auth.user);
+  const currentUser = useSelector(getCurrentUser);
 
   return !currentUser ? (
     <Outlet />

@@ -1,18 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-
-type UserStateType = {
-  email: string;
-  username: string;
-} | null;
-
-type AccessTokenType = string | null;
-
-type AuthStateAuthType = {
-  access_token: AccessTokenType;
-  user: UserStateType;
-  tryingLoginPersist?: boolean;
-};
+import { AuthStateAuthType } from './types';
+import { RootState } from '../store';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -41,5 +30,9 @@ const authSlice = createSlice({
 });
 
 export const { setAuth, logOut, setTryingLoginPersist } = authSlice.actions;
+
+export const getCurrentUser = (state: RootState) => state.auth.user;
+export const getTryinLoginPersist = (state: RootState) =>
+  state.auth.tryingLoginPersist;
 
 export default authSlice.reducer;
