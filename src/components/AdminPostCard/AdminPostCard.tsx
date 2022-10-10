@@ -29,13 +29,13 @@ const AdminPostCard = ({
 
         <PostDateSC>
           <>
-            <strong>Created At:</strong>&nbsp;
+            <strong>Created:</strong>&nbsp;
             {getRelDate(createdAt)}
           </>
         </PostDateSC>
         <PostDateSC>
           <>
-            <strong>Updated At:</strong>&nbsp;
+            <strong>Updated:</strong>&nbsp;
             {getRelDate(updatedAt)}
           </>
         </PostDateSC>

@@ -65,8 +65,8 @@ const PostPublic = () => {
 
         <PostDateSC>
           <>
-            <strong>Created At: </strong>
-            <strong>Updated At:</strong>&nbsp; {getRelDate(post.createdAt)}
+            <strong>Created: </strong>
+            <strong>Updated:</strong>&nbsp; {getRelDate(post.createdAt)}
           </>
         </PostDateSC>
         <PostDateSC>

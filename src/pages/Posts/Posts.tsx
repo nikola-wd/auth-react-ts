@@ -29,6 +29,8 @@ const Posts = () => {
   const [error, setError] = useState<string>('');
   const [posts, setPosts] = useState<Post[] | []>([]);
 
+  // TODO: Refactor this component to use useOnRenderRequest or create a similar one that doesn't send the Bearer token in headers
+
   // TODO: Fix the double call
   useEffect(() => {
     // TODO: Abort controller
@@ -53,30 +55,24 @@ const Posts = () => {
     <PageWrap pageTitle="Home">
       {currentUser && <h3>Welcome, {currentUser!.username}</h3>}
       <br />
-      <h3>
-        TODO: Remove this page. Only here temporarily for testing. Also test
-        ingle post based on slug
-      </h3>
-      <p>lorem ipsum dolor sit amet, consectetur adip</p>
-      <h2>Posts will be rendered here</h2>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}
       {posts &&
         posts.map((post) => (
           <div key={post.id} style={{ padding: 20 }}>
-            <Link to={post.slug}>
+            <Link to={post.slug} className="c-white">
               <h4>{post.title}</h4>
             </Link>
             <p style={{ marginBlock: '10px' }}>{post.content}</p>
             {/* TODO: date fns */}
             <PostDateSC>
               <>
-                <strong>Created At</strong>&nbsp; {getRelDate(post.createdAt)}
+                <strong>Created: </strong>&nbsp; {getRelDate(post.createdAt)}
               </>
             </PostDateSC>
             <PostDateSC>
               <>
-                <strong>Updated At</strong>&nbsp; {getRelDate(post.updatedAt)}
+                <strong>Updated: </strong>&nbsp; {getRelDate(post.updatedAt)}
               </>
             </PostDateSC>
             <p>
