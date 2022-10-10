@@ -1,9 +1,8 @@
-import { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import AdminPostCard from '../../components/AdminPostCard/AdminPostCard';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
-import useAxiosPrivate from '../../hooks/useAxiosPrivate';
+import useOnRenderRequest from '../../hooks/useOnRenderRequest';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { PlgSC } from '../../styles/PLgSC';
 
@@ -16,43 +15,15 @@ export type PostByUser = {
 };
 
 const MyPosts = () => {
-  const axiosPrivate = useAxiosPrivate();
-
-  const effectRan = useRef<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [posts, setPosts] = useState<PostByUser[]>([]);
-
-  // TODO: implement abort controllers in all components if needed
-  // TODO: Maybe if detected that the the token expired, logout
-  useEffect(() => {
-    if (effectRan.current === true || process.env.NODE_ENV !== 'development') {
-      console.log(
-        'Should fetch my posts here________________________________________',
-      );
-      (async () => {
-        try {
-          setIsLoading(true);
-          const res = await axiosPrivate.get('/posts/by-user-id');
-
-          console.log(res);
-          console.log(res.status);
-
-          setPosts(res.data);
-        } catch (err) {
-          console.log(err);
-          setIsError(true);
-        } finally {
-          setIsLoading(false);
-        }
-      })();
-    }
-
-    return () => {
-      effectRan.current = true;
-    };
-  }, [axiosPrivate]);
-  // eslint - disable - next - line;
+  const {
+    data: posts,
+    isLoading,
+    isSuccess,
+    isError,
+    isFinished,
+  } = useOnRenderRequest<PostByUser[]>({
+    url: '/posts/by-user-id',
+  });
 
   let content = <></>;
 
@@ -65,10 +36,10 @@ const MyPosts = () => {
   } else if (isError) {
     content = (
       <p>
-        <Spinner /> Loading...
+        Something Bad Happened. Try refreshing the page, or go back to posts
       </p>
     );
-  } else if (posts) {
+  } else if (isFinished && isSuccess && posts) {
     if (!posts.length) {
       content = (
         <div>

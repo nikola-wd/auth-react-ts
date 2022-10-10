@@ -20,7 +20,6 @@ type PostPublicType = {
   };
 };
 
-// TODO: Use this approach in MyPosts component
 const PostPublic = () => {
   const { slug } = useParams();
 
