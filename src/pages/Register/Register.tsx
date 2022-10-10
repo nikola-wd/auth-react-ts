@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import jwt_decode from 'jwt-decode';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
@@ -14,14 +13,8 @@ import { postRegisterUser } from '../../utils/api';
 import { setAuth } from '../../store/slices/authSlice';
 import { ERR_MSG } from '../../utils/ERR_MSG';
 import { HttpStatus } from '../../utils/http-status.enum';
-
-type Inputs = {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-};
+import { decode_at } from '../../utils/decode_at';
+import { RegisterUserInputs } from './types';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -35,13 +28,13 @@ const Register = () => {
     handleSubmit,
     // watch,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<RegisterUserInputs>();
 
   // TODO: Temp, remove
   // Or create a helper hook that returns data, loading, and error states
   const [loading, setLoading] = useState<boolean>(false);
 
-  const [formData, setFormData] = useState<null | Inputs>(null);
+  const [formData, setFormData] = useState<null | RegisterUserInputs>(null);
 
   useEffect(() => {
     if (formData) {
@@ -61,9 +54,7 @@ const Register = () => {
           }
 
           const { access_token } = res.data;
-          let decoded_AT: { email: string; username: string } =
-            jwt_decode(access_token);
-          const { email, username } = decoded_AT;
+          const { email, username } = decode_at(access_token);
 
           dispatch(setAuth({ user: { email, username }, access_token }));
           navigate(from, { replace: true });
@@ -82,7 +73,7 @@ const Register = () => {
     }
   }, [dispatch, formData, from, navigate]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const onSubmit: SubmitHandler<RegisterUserInputs> = (data) => {
     setFormData(data);
   };
 

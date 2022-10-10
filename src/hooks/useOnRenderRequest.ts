@@ -1,13 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { AxiosError, AxiosRequestConfig } from 'axios';
+import { AxiosError } from 'axios';
 import useAxiosPrivate from './useAxiosPrivate';
 import { RequestMethod } from '../utils/request-method.enum';
-
-type OnRenderRequestType = {
-  url: string;
-  method?: RequestMethod;
-  config?: AxiosRequestConfig;
-};
+import { OnRenderRequestType } from './types';
 
 const useOnRenderRequest = <T>({
   url,
