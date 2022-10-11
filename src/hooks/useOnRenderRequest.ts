@@ -4,11 +4,13 @@ import useAxiosPrivate from './useAxiosPrivate';
 import { RequestMethod } from '../utils/request-method.enum';
 import { CustomRequestType } from './types';
 
-const useOnRenderRequest = <T>({
-  url,
-  method = RequestMethod.GET,
-  config = {},
-}: CustomRequestType) => {
+const useOnRenderRequest = <T, M>(props: CustomRequestType<T, M>) => {
+  const { url, method = RequestMethod.GET, config = {} } = props;
+
+  if (props?.data) {
+    config.data = props.data;
+  }
+
   const axiosPrivate = useAxiosPrivate();
 
   const effectRan = useRef<boolean>(false);

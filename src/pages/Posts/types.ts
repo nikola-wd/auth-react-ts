@@ -16,6 +16,7 @@ export type Post = {
 // TODO: Merge to one if possible
 export type PostType = {
   id: number;
+  slug?: string;
   title: string;
   content: string;
   createdAt: Date;

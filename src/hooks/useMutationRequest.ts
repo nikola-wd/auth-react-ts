@@ -19,11 +19,9 @@ const useMutationRequest = <T>() => {
 
   const controller = useRef<AbortController>(new AbortController());
 
-  const mutate = async ({
-    url,
-    method = RequestMethod.GET,
-    config = {},
-  }: CustomRequestType) => {
+  const mutate = async <T, M>(props: CustomRequestType<T, M>) => {
+    const { url, method = RequestMethod.GET, config = {} } = props;
+
     config.signal = controller.current.signal;
 
     try {
@@ -31,7 +29,20 @@ const useMutationRequest = <T>() => {
         'Should run mutation hook here________________________________________',
       );
       setIsLoading(true);
-      const res = await axiosPrivate[method](url, config);
+
+      // const res = await axiosPrivate[method](...reqAttrs);
+
+      let reqSettings: CustomRequestType<T, M> = {
+        method,
+        url,
+        config,
+      };
+
+      if (props?.data) {
+        reqSettings.data = props.data;
+      }
+
+      const res = await axiosPrivate(reqSettings);
 
       if (!res?.headers['content-type']?.startsWith('application/json')) {
         // TODO: Maybe create custom errors and exceptions

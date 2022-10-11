@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useParams } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import FormField from '../../components/FormField/FormField';
@@ -33,7 +33,7 @@ const EditPost = () => {
     isError,
     error,
     isFinished,
-  } = useOnRenderRequest<PostType>({
+  } = useOnRenderRequest<PostType, null>({
     url: `/posts/by-id/${postId}`,
   });
 
@@ -47,10 +47,14 @@ const EditPost = () => {
     error: updatingError,
   } = useMutationRequest<PostType>();
 
-  const onSubmit = () => {
-    updatePost({
+  const onSubmit: SubmitHandler<EditPostInputs> = (formData) => {
+    console.log('Form Data________________');
+    console.log(formData);
+
+    updatePost<PostType, EditPostInputs>({
       url: `/posts/by-id/${postId}`,
-      method: RequestMethod.POST,
+      method: RequestMethod.PUT,
+      data: formData,
     });
   };
 
@@ -81,7 +85,7 @@ const EditPost = () => {
   } else if ((isError && error) || (isUpdatingError && updatingError)) {
     let err = error || updatingError;
 
-    if (err?.code === 'ERR_BAD_REQUEST') {
+    if (err?.code === 'ERR_BAD_REQUEST' && err?.response?.status === 404) {
       // TODO: Maybe there is a better way to handle 404
 
       return <Error404 />;
@@ -158,7 +162,12 @@ const EditPost = () => {
           </p>
         )}
 
-        {isUpdatingSuccess && <p>Finished Updating The Post</p>}
+        {isUpdatingSuccess && (
+          <p>
+            Finished Updating The Post, check it out:{' '}
+            <Link to={`/posts/${postData.slug}`}>{postData.title}</Link>
+          </p>
+        )}
       </div>
     );
   }

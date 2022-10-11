@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useAppDispatch } from '../../store/hooks';
 import { logOut } from '../../store/slices/authSlice';
@@ -10,6 +10,8 @@ import Avatar from '../svg/Avatar';
 
 const HeaderUserActions = () => {
   const axiosPrivate = useAxiosPrivate();
+
+  const navigate = useNavigate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -31,6 +33,7 @@ const HeaderUserActions = () => {
       } else {
         console.log('res is ok');
         dispatch(logOut());
+        navigate('/login');
       }
     } catch (err) {
       console.log(err);

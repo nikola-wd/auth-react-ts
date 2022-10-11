@@ -1,10 +1,12 @@
 import { AxiosRequestConfig } from 'axios';
 import { RequestMethod } from '../../utils/request-method.enum';
 
-export type CustomRequestType = {
+export type CustomRequestType<T, M> = {
   url: string;
   method?: RequestMethod;
   config?: AxiosRequestConfig;
+  responseData?: T;
+  data?: M;
 };
 
 // used in useRefreshToken

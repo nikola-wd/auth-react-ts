@@ -20,7 +20,7 @@ const PostPublic = () => {
     isError,
     error,
     isFinished,
-  } = useOnRenderRequest<PostType>({
+  } = useOnRenderRequest<PostType, null>({
     url: `/posts/by-slug/${slug}`,
   });
 
@@ -33,7 +33,7 @@ const PostPublic = () => {
       </p>
     );
   } else if (isError && error) {
-    if (error.code === 'ERR_BAD_REQUEST') {
+    if (error?.code === 'ERR_BAD_REQUEST' && error?.response?.status === 404) {
       // TODO: Maybe there is a better way to handle 404
 
       return <Error404 />;

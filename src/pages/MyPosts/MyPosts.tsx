@@ -21,7 +21,7 @@ const MyPosts = () => {
     isSuccess,
     isError,
     isFinished,
-  } = useOnRenderRequest<PostByUser[]>({
+  } = useOnRenderRequest<PostByUser[], null>({
     url: '/posts/by-user-id',
   });
 

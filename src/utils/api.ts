@@ -5,12 +5,15 @@ import { LoginUserParams, RegisterUserParams } from '../types';
 // Used for independent testing on localhost:3000
 // const API_BASE = process.env.REACT_APP_API_BASE;
 
-// Used for testing when served by Nest.js from the dist/client/build folder
-let API_BASE = 'api/v1';
+// TODO: Move from here
+let API_BASE = 'http://localhost:3001/api/v1';
 
-if (process.env.REACT_APP_ENVIRONMENT === 'development') {
-  API_BASE = process.env.REACT_APP_API_BASE as string;
-}
+// Used for testing when served by Nest.js from the dist/client/build folder
+// let API_BASE = 'api/v1';
+
+// if (process.env.REACT_APP_ENVIRONMENT === 'development') {
+//   API_BASE = process.env.REACT_APP_API_BASE as string;
+// }
 
 export const axiosClient = axios.create({
   baseURL: API_BASE,
