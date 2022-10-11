@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import FormField from '../../components/FormField/FormField';
-import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
+import { FormWrapSC } from '../../styles/FormWrapSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
@@ -75,7 +75,7 @@ const Login = () => {
   };
 
   return (
-    <AuthWrapSC>
+    <FormWrapSC>
       <h2>Login</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FormField
@@ -154,7 +154,7 @@ const Login = () => {
           Don't have an account? <Link to="/register">Register</Link>
         </p>
       </footer>
-    </AuthWrapSC>
+    </FormWrapSC>
   );
 };
 

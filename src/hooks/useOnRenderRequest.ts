@@ -2,13 +2,13 @@ import { useState, useEffect, useRef } from 'react';
 import { AxiosError } from 'axios';
 import useAxiosPrivate from './useAxiosPrivate';
 import { RequestMethod } from '../utils/request-method.enum';
-import { OnRenderRequestType } from './types';
+import { CustomRequestType } from './types';
 
 const useOnRenderRequest = <T>({
   url,
   method = RequestMethod.GET,
   config = {},
-}: OnRenderRequestType) => {
+}: CustomRequestType) => {
   const axiosPrivate = useAxiosPrivate();
 
   const effectRan = useRef<boolean>(false);

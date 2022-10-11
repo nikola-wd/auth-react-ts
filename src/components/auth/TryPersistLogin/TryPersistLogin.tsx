@@ -61,11 +61,9 @@ const TryPersistLogin = () => {
   // TODO: Maybe remove persist helper
   if (!persist) {
     // persist: no
-    console.log('PersistLogin:no persist');
     content = <Outlet />;
   } else if (isLoading) {
     // persist: yes, token: no
-    console.log('PersistLogin:loading');
     // TODO: Maybe overlay loader component here
     content = (
       <p>
@@ -74,7 +72,6 @@ const TryPersistLogin = () => {
     );
   } else if (isError) {
     // persist: yes, token: no
-    console.log('PersistLogin:error');
     // TODO: Maybe global overlay error comp
     content = (
       <div className="errmsg">
@@ -87,11 +84,9 @@ const TryPersistLogin = () => {
     );
   } else if (isSuccess && trueSuccess) {
     // persist: yes, token: yes
-    console.log('PersistLogin:success');
     content = <Outlet />;
   } else if (token && isUninitialized) {
     // persist: yes, token: yes
-    console.log('PersistLogin:token and uninitialized');
     console.log(isUninitialized);
     content = <Outlet />;
   }

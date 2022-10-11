@@ -14,7 +14,8 @@ export type Post = {
 };
 
 // TODO: Merge to one if possible
-export type PostPublicType = {
+export type PostType = {
+  id: number;
   title: string;
   content: string;
   createdAt: Date;

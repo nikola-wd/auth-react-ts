@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from 'axios';
 import { RequestMethod } from '../../utils/request-method.enum';
 
-export type OnRenderRequestType = {
+export type CustomRequestType = {
   url: string;
   method?: RequestMethod;
   config?: AxiosRequestConfig;

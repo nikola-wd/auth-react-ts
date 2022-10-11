@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
-import { AuthWrapSC } from '../../components/AuthWrap/AuthWrapSC';
+import { FormWrapSC } from '../../styles/FormWrapSC';
 import FormField from '../../components/FormField/FormField';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { REGEXSPS } from '../../utils/REGEXPS';
@@ -79,7 +79,7 @@ const Register = () => {
 
   // TODO: Maybe move error mesages to a helper constants file, or get them from server if somehow this passes
   return (
-    <AuthWrapSC>
+    <FormWrapSC>
       <h2>Register</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <FlexWrapSC cols={2}>
@@ -205,7 +205,7 @@ const Register = () => {
           Already have an account? <Link to="/login">Sign In</Link>
         </p>
       </footer>
-    </AuthWrapSC>
+    </FormWrapSC>
   );
 };
 

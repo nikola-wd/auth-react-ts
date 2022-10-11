@@ -8,7 +8,7 @@ import { PlgSC } from '../../styles/PLgSC';
 import { PostDateSC } from '../../styles/PostDateSC';
 import { getRelDate } from '../../utils/getRelDate';
 import Error404 from '../Error/Error404';
-import { PostPublicType } from './types';
+import { PostType } from './types';
 
 const PostPublic = () => {
   const { slug } = useParams();
@@ -20,7 +20,7 @@ const PostPublic = () => {
     isError,
     error,
     isFinished,
-  } = useOnRenderRequest<PostPublicType>({
+  } = useOnRenderRequest<PostType>({
     url: `/posts/by-slug/${slug}`,
   });
 

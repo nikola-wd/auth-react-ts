@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const AuthWrapSC = styled.div`
+export const FormWrapSC = styled.div`
   width: 100%;
   max-width: 700px;
   margin: 100px auto;
