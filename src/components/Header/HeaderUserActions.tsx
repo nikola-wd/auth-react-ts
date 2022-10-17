@@ -1,4 +1,4 @@
-import { PropsWithChildren, useState, FC } from 'react';
+import { useState, FC } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useAppDispatch } from '../../store/hooks';
@@ -49,8 +49,8 @@ const HeaderUserActions: FC<Partial<AuthStateAuthType>> = ({ user }) => {
       <NavLink to="/my-posts">
         <ButtonSC type="button">My Posts</ButtonSC>
       </NavLink>
-      <NavLink to="/posts/create">
-        <ButtonSC type="button">TODO: Create Post</ButtonSC>
+      <NavLink to="/my-posts/create">
+        <ButtonSC type="button">Create Post</ButtonSC>
       </NavLink>
       <Dropdown
         label={

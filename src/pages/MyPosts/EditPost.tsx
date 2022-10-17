@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import FormField from '../../components/FormField/FormField';
 import PageWrap from '../../components/PageWrap/PageWrap';
@@ -17,6 +17,7 @@ import { EditPostInputs } from './types';
 
 const EditPost = () => {
   const { postId } = useParams();
+  const navigate = useNavigate();
 
   const [postData, setPostData] = useState<PostType | null>(null);
 
@@ -47,14 +48,26 @@ const EditPost = () => {
     error: updatingError,
   } = useMutationRequest<PostType>();
 
-  const onSubmit: SubmitHandler<EditPostInputs> = (formData) => {
-    console.log('Form Data________________');
-    console.log(formData);
+  const {
+    mutate: deletePost,
+    isLoading: isDeletingLoading,
+    isSuccess: isDeletingSuccess,
+    isError: isDeletingError,
+    error: deletingError,
+  } = useMutationRequest();
 
+  const onSubmit: SubmitHandler<EditPostInputs> = (formData) => {
     updatePost<PostType, EditPostInputs>({
       url: `/posts/by-id/${postId}`,
       method: RequestMethod.PUT,
       data: formData,
+    });
+  };
+
+  const onDelete = () => {
+    deletePost<PostType, EditPostInputs>({
+      url: `/posts/by-id/${postId}`,
+      method: RequestMethod.DELETE,
     });
   };
 
@@ -73,6 +86,13 @@ const EditPost = () => {
       setPostData(updatedPost);
     }
   }, [updatedPost]);
+
+  useEffect(() => {
+    if (isDeletingSuccess) {
+      console.log('______SUCCESSSS: Deleted___________________________');
+      navigate('/my-posts');
+    }
+  }, [isDeletingSuccess, navigate]);
 
   let content = <></>;
 
@@ -117,6 +137,7 @@ const EditPost = () => {
                 defaultValue={postData?.title || ''}
                 {...register('title', {
                   required: true,
+                  minLength: 3,
                 })}
               />
               {errors.title && (
@@ -135,6 +156,7 @@ const EditPost = () => {
                 defaultValue={postData?.content || ''}
                 {...register('content', {
                   required: true,
+                  minLength: 3,
                 })}
               />
               {errors.content && (
@@ -172,7 +194,20 @@ const EditPost = () => {
     );
   }
 
-  return <PageWrap pageTitle={`Edit Post: ${postId}`}>{content}</PageWrap>;
+  return (
+    <PageWrap pageTitle={`Edit Post: ${postData?.title || 'Loading Title...'}`}>
+      {content}
+
+      <ButtonSC danger onClick={onDelete} disabled={isDeletingLoading}>
+        Delete Post: TODO: add confirmation modal
+        {isDeletingLoading && <Spinner />}
+      </ButtonSC>
+
+      {!isDeletingLoading && isDeletingError && deletingError?.message && (
+        <p style={{ color: 'crimson' }}>{deletingError.message}</p>
+      )}
+    </PageWrap>
+  );
 };
 
 export default EditPost;

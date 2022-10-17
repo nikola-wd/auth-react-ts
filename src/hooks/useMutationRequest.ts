@@ -61,7 +61,7 @@ const useMutationRequest = <T>() => {
       const res = await axiosPrivate(reqSettings);
       console.log(res);
 
-      if (res.status === 201) {
+      if (res.status === 201 || res.status === 204) {
         setIsSuccess(true);
         return;
       }

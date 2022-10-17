@@ -32,7 +32,6 @@ const CreatePost = () => {
 
   useEffect(() => {
     if (isCreatingSuccess) {
-      console.log('______SUCCESSSS___________________________');
       navigate('/my-posts');
     }
   }, [isCreatingSuccess, navigate]);
@@ -61,6 +60,7 @@ const CreatePost = () => {
                 defaultValue=""
                 {...register('slug', {
                   required: true,
+                  minLength: 3,
                 })}
               />
               {errors.slug && (
@@ -79,6 +79,7 @@ const CreatePost = () => {
                 defaultValue=""
                 {...register('title', {
                   required: true,
+                  minLength: 3,
                 })}
               />
               {errors.title && (
@@ -96,6 +97,7 @@ const CreatePost = () => {
                 defaultValue=""
                 {...register('content', {
                   required: true,
+                  minLength: 3,
                 })}
               />
               {errors.content && (
