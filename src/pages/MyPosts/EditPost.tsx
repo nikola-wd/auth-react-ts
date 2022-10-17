@@ -89,7 +89,6 @@ const EditPost = () => {
 
   useEffect(() => {
     if (isDeletingSuccess) {
-      console.log('______SUCCESSSS: Deleted___________________________');
       navigate('/my-posts');
     }
   }, [isDeletingSuccess, navigate]);
