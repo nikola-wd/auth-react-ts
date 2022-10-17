@@ -85,7 +85,7 @@ const EditPost = () => {
   } else if ((isError && error) || (isUpdatingError && updatingError)) {
     let err = error || updatingError;
 
-    if (err?.code === 'ERR_BAD_REQUEST' && err?.response?.status === 404) {
+    if (err?.statusCode === 404) {
       // TODO: Maybe there is a better way to handle 404
 
       return <Error404 />;

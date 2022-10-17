@@ -4,12 +4,31 @@ import useAxiosPrivate from './useAxiosPrivate';
 import { RequestMethod } from '../utils/request-method.enum';
 import { CustomRequestType } from './types';
 
+// TODO: Maybe this type exists and move to types
+type CustomResponseErrorType = {
+  statusCode: number;
+  message?: string;
+  error?: string;
+};
+
+class CustomResponseError {
+  statusCode: number;
+  message?: string;
+  error?: string;
+
+  constructor(errorOBJ: CustomResponseErrorType) {
+    this.statusCode = errorOBJ?.statusCode;
+    this.message = errorOBJ?.message;
+    this.error = errorOBJ?.error;
+  }
+}
+
 const useMutationRequest = <T>() => {
   const axiosPrivate = useAxiosPrivate();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [error, setError] = useState<AxiosError>();
+  const [error, setError] = useState<CustomResponseError>();
   const [data, setData] = useState<T | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isFinished, setIsFinished] = useState<boolean>(false);
@@ -25,9 +44,6 @@ const useMutationRequest = <T>() => {
     config.signal = controller.current.signal;
 
     try {
-      console.log(
-        'Should run mutation hook here________________________________________',
-      );
       setIsLoading(true);
 
       // const res = await axiosPrivate[method](...reqAttrs);
@@ -43,24 +59,40 @@ const useMutationRequest = <T>() => {
       }
 
       const res = await axiosPrivate(reqSettings);
+      console.log(res);
+
+      if (res.status === 201) {
+        setIsSuccess(true);
+        return;
+      }
 
       if (!res?.headers['content-type']?.startsWith('application/json')) {
         // TODO: Maybe create custom errors and exceptions
 
-        throw new AxiosError('API route not found', 'ERR_BAD_REQUEST');
+        throw new CustomResponseError({ statusCode: 404 });
       }
 
-      console.log(res);
-      console.log(res.status);
-
-      setData(res.data);
-      setIsSuccess(true);
+      if (res?.data) {
+        setData(res.data);
+        setIsSuccess(true);
+      }
     } catch (err) {
-      const error = err as AxiosError;
-      console.log(err);
+      const axErr = err as AxiosError;
+      // const error = err;
+      const error = err as CustomResponseError;
 
-      console.log('404 from server error: ', err);
-      setError(error);
+      if (axErr.response?.data) {
+        console.log('catch: ', axErr.response!.data);
+
+        // TODO: definitelly refactor this and standardize errors
+        const finalError = new CustomResponseError(
+          axErr.response!.data as CustomResponseError,
+        );
+        setError(finalError);
+      } else {
+        setError(error);
+      }
+
       setIsError(true);
     } finally {
       setIsLoading(false);

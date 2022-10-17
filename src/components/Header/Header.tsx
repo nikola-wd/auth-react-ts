@@ -37,7 +37,11 @@ const Header = () => {
               <ButtonSC type="button">Posts</ButtonSC>
             </NavLink>
             {/* TODO: Fix login buttons blinking */}
-            {!currentUser ? <HeaderPublicActions /> : <HeaderUserActions />}
+            {!currentUser ? (
+              <HeaderPublicActions />
+            ) : (
+              <HeaderUserActions user={currentUser} />
+            )}
           </>
         )}
       </HeaderActionsSC>

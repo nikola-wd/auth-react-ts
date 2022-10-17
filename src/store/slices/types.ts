@@ -1,6 +1,6 @@
 type AccessTokenType = string | null;
 
-type UserStateType = {
+export type UserStateType = {
   email: string;
   username: string;
 } | null;

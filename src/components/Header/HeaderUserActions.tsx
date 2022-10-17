@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { PropsWithChildren, useState, FC } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import useAxiosPrivate from '../../hooks/useAxiosPrivate';
 import { useAppDispatch } from '../../store/hooks';
@@ -7,8 +7,10 @@ import { ButtonSC } from '../../styles/ButtonSC';
 import { HttpStatus } from '../../utils/http-status.enum';
 import Dropdown from '../Dropdown/Dropdown';
 import Avatar from '../svg/Avatar';
+import { AuthStateAuthType } from '../../store/slices/types';
 
-const HeaderUserActions = () => {
+// TODO: type better
+const HeaderUserActions: FC<Partial<AuthStateAuthType>> = ({ user }) => {
   const axiosPrivate = useAxiosPrivate();
 
   const navigate = useNavigate();
@@ -53,11 +55,11 @@ const HeaderUserActions = () => {
       <Dropdown
         label={
           <>
-            Username <Avatar />
+            {user?.username && <span>{user.username}</span>} <Avatar />
           </>
         }
       >
-        <span>test@test.com</span>
+        {user?.email && <span>{user.email}</span>}
         <ButtonSC
           primary
           type="button"

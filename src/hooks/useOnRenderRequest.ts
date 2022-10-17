@@ -4,6 +4,12 @@ import useAxiosPrivate from './useAxiosPrivate';
 import { RequestMethod } from '../utils/request-method.enum';
 import { CustomRequestType } from './types';
 
+type CustomResponseError = {
+  statusCode: number;
+  message?: string;
+  error?: string;
+};
+
 const useOnRenderRequest = <T, M>(props: CustomRequestType<T, M>) => {
   const { url, method = RequestMethod.GET, config = {} } = props;
 
@@ -17,7 +23,7 @@ const useOnRenderRequest = <T, M>(props: CustomRequestType<T, M>) => {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
-  const [error, setError] = useState<AxiosError>();
+  const [error, setError] = useState<CustomResponseError>();
   const [data, setData] = useState<T | null>(null);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
   const [isFinished, setIsFinished] = useState<boolean>(false);
@@ -49,7 +55,7 @@ const useOnRenderRequest = <T, M>(props: CustomRequestType<T, M>) => {
           setData(res.data);
           setIsSuccess(true);
         } catch (err) {
-          const error = err as AxiosError;
+          const error = err as CustomResponseError;
           console.log(err);
 
           console.log('404 from server error: ', err);
