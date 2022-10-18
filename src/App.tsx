@@ -40,13 +40,18 @@ function App() {
                   <Route path=":postId" element={<EditPost />} />
                 </Route>
               </Route>
+
+              {/* TEST remove */}
+              <Route element={<PublicGuard />}>
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+              </Route>
             </Route>
-            <Route element={<PublicGuard />}>
+            {/* <Route element={<PublicGuard />}>
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />
-            </Route>
-            {/* <Route path="/" element={<Navigate replace to="/login" />} /> */}
-            {/* <Route path="*" element={<Error404 />} /> */}
+            </Route> */}
+
             <Route path="*" element={<Error404 />} />
           </Routes>
         </main>

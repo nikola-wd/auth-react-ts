@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, ReactElement } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useLocation } from 'react-router-dom';
 
 import usePersist from '../../../hooks/usePersist';
 import useRefreshToken from '../../../hooks/useRefreshToken';
@@ -12,6 +12,8 @@ import Spinner from '../../svg/Spinner';
 
 const TryPersistLogin = () => {
   const token = useAppSelector(getCurrentToken);
+
+  const location = useLocation();
 
   const [persist] = usePersist();
   const effectRan = useRef<boolean>(false);
@@ -73,8 +75,16 @@ const TryPersistLogin = () => {
   } else if (isError) {
     // persist: yes, token: no
     // TODO: Maybe global overlay error comp
+
+    // If logged out, don't show login btn, but go to login or register page
+
+    if (location.pathname === '/login' || location.pathname === '/register') {
+      return <Outlet />;
+    }
+
     content = (
       <div className="errmsg">
+        <p>Current Path: {location.pathname}</p>
         <p>{error?.data?.message}</p>
         {/* TODO: Maybe redirect instead of showing this message */}
         <Link to="/login">
