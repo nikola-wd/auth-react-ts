@@ -1,12 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
+import CreatedUpdatedAt from '../../components/CreatedUpdatedAt/CreatedUpdatedAt';
 
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
 import useOnRenderRequest from '../../hooks/useOnRenderRequest';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { PlgSC } from '../../styles/PLgSC';
-import { PostDateSC } from '../../styles/PostDateSC';
-import { getRelDate } from '../../utils/getRelDate';
 import Error404 from '../Error/Error404';
 import { PostType } from './types';
 
@@ -45,25 +44,16 @@ const PostPublic = () => {
       );
     }
   } else if (isFinished && isSuccess && post) {
-    // TODO: custom PublicPostCardSC component
     content = (
       <div>
         <Link to="/posts" className="tdn">
           <ButtonSC>All Posts</ButtonSC>
         </Link>
         <PlgSC>{post.content}</PlgSC>
-
-        <PostDateSC>
-          <>
-            <strong>Created: </strong>
-            <strong>Updated:</strong>&nbsp; {getRelDate(post.createdAt)}
-          </>
-        </PostDateSC>
-        <PostDateSC>
-          <>
-            <strong>Updated At:</strong>&nbsp; {getRelDate(post.updatedAt)}
-          </>
-        </PostDateSC>
+        <CreatedUpdatedAt
+          createdAt={post.createdAt}
+          updatedAt={post.updatedAt}
+        />
       </div>
     );
   }

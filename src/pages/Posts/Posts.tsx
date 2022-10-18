@@ -1,12 +1,11 @@
 import { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import CreatedUpdatedAt from '../../components/CreatedUpdatedAt/CreatedUpdatedAt';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import { useAppSelector } from '../../store/hooks';
 import { getCurrentUser } from '../../store/slices/authSlice';
-import { PostDateSC } from '../../styles/PostDateSC';
 import { getAllPosts } from '../../utils/api';
-import { getRelDate } from '../../utils/getRelDate';
 import { Post } from './types';
 
 const Posts = () => {
@@ -37,6 +36,8 @@ const Posts = () => {
     fetchPosts();
   }, []);
 
+  // TODO: Create a PostPublicCard component
+
   return (
     <PageWrap pageTitle="Home">
       {currentUser && <h3>Welcome, {currentUser!.username}</h3>}
@@ -50,17 +51,10 @@ const Posts = () => {
               <h4>{post.title}</h4>
             </Link>
             <p style={{ marginBlock: '10px' }}>{post.content}</p>
-            {/* TODO: date fns */}
-            <PostDateSC>
-              <>
-                <strong>Created: </strong>&nbsp; {getRelDate(post.createdAt)}
-              </>
-            </PostDateSC>
-            <PostDateSC>
-              <>
-                <strong>Updated: </strong>&nbsp; {getRelDate(post.updatedAt)}
-              </>
-            </PostDateSC>
+            <CreatedUpdatedAt
+              createdAt={post.createdAt}
+              updatedAt={post.updatedAt}
+            />
             <p>
               <strong>Author: </strong> {post?.user?.firstName}{' '}
               {post?.user?.lastName}
