@@ -4,8 +4,8 @@ import { AuthStateAuthType } from './types';
 import { RootState } from '../store';
 
 const initialState: AuthStateAuthType = {
-  access_token: null,
   user: null,
+  access_token: null,
   tryingLoginPersist: false,
 };
 
@@ -13,10 +13,10 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setAuth: (state, action: PayloadAction<AuthStateAuthType>) => {
-      const { access_token, user } = action.payload;
-      state.access_token = access_token;
+    setCredentials: (state, action: PayloadAction<AuthStateAuthType>) => {
+      const { user, access_token } = action.payload;
       state.user = user;
+      state.access_token = access_token;
     },
     logOut: (state) => {
       state.access_token = null;
@@ -31,7 +31,8 @@ const authSlice = createSlice({
   },
 });
 
-export const { setAuth, logOut, setTryingLoginPersist } = authSlice.actions;
+export const { setCredentials, logOut, setTryingLoginPersist } =
+  authSlice.actions;
 
 export const getCurrentUser = (state: RootState) => state.auth.user;
 export const getCurrentToken = (state: RootState) => state.auth.access_token;

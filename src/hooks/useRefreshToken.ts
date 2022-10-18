@@ -1,5 +1,8 @@
 import { axiosClient } from '../utils/api';
-import { setAuth, setTryingLoginPersist } from '../store/slices/authSlice';
+import {
+  setCredentials,
+  setTryingLoginPersist,
+} from '../store/slices/authSlice';
 
 import { AxiosError, AxiosRequestConfig } from 'axios';
 import { useEffect, useState } from 'react';
@@ -62,7 +65,7 @@ const useRefreshToken = () => {
       refreshReturnData.email = email;
       refreshReturnData.username = username;
 
-      dispatch(setAuth({ user: { email, username }, access_token }));
+      dispatch(setCredentials({ user: { email, username }, access_token }));
       setIsSuccess(true);
     } catch (error) {
       const err = error as AxiosError;

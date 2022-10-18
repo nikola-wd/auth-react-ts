@@ -4,7 +4,10 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 import usePersist from '../../../hooks/usePersist';
 import useRefreshToken from '../../../hooks/useRefreshToken';
 import { useAppSelector } from '../../../store/hooks';
-import { getCurrentToken, setAuth } from '../../../store/slices/authSlice';
+import {
+  getCurrentToken,
+  setCredentials,
+} from '../../../store/slices/authSlice';
 import Button from '../../Button/Button';
 import Spinner from '../../svg/Spinner';
 
@@ -26,11 +29,11 @@ const TryPersistLogin = () => {
       const verifyRefreshToken = async () => {
         console.log('Verifying refresh token');
         try {
-          // TODO: When finished, dispatch setAuth here,
+          // TODO: When finished, dispatch setCredentials here,
           // or maybe create another useEffect that sets the data when trueSuccess is true
           const { access_token, username, email } = await refresh();
           if (access_token && username && email) {
-            setAuth({
+            setCredentials({
               access_token,
               user: {
                 username,

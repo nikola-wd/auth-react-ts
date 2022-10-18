@@ -7,14 +7,13 @@ import { FormWrapSC } from '../../styles/FormWrapSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
-import { setAuth } from '../../store/slices/authSlice';
+import { setCredentials } from '../../store/slices/authSlice';
 import { ERR_MSG } from '../../utils/ERR_MSG';
 import { postLoginUser } from '../../utils/api';
 import { HttpStatus } from '../../utils/http-status.enum';
 import { decode_at } from '../../utils/decode_at';
 import { LoginUserInputs } from './types';
 import { useAppDispatch } from '../../store/hooks';
-// import usePersist from '../../hooks/usePersist';
 
 const Login = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -53,7 +52,7 @@ const Login = () => {
           const { access_token } = res.data;
           const { email, username } = decode_at(access_token);
 
-          dispatch(setAuth({ user: { email, username }, access_token }));
+          dispatch(setCredentials({ user: { email, username }, access_token }));
           navigate(from, { replace: true });
         } catch (err) {
           console.log('ERRORRRRR: ', err);
