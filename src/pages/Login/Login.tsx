@@ -30,9 +30,7 @@ const Login = () => {
   const onSubmit: SubmitHandler<LoginUserInputs> = async (data) => {
     try {
       const userData = await login({ ...data }).unwrap();
-
       console.log('Login User Data: ', userData);
-
       dispatch(setCredentials({ ...userData }));
       navigate(from, { replace: true });
     } catch (err) {

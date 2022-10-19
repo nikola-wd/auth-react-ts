@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -8,18 +7,19 @@ import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
 import { FlexWrapSC } from '../../styles/FlexWrapSC';
-import { postRegisterUser } from '../../utils/api';
 import { setCredentials } from '../../store/slices/authSlice';
 import { ERR_MSG } from '../../utils/ERR_MSG';
-import { HttpStatus } from '../../utils/http-status.enum';
-import { decode_at } from '../../utils/decode_at';
+// import { HttpStatus } from '../../utils/http-status.enum';
 import { RegisterUserInputs } from './types';
 import { useAppDispatch } from '../../store/hooks';
+import { useRegisterMutation } from '../../store/slices/authApiSlice';
 
 const Register = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+
+  const [registerUser, { isLoading }] = useRegisterMutation();
 
   const dispatch = useAppDispatch();
 
@@ -30,51 +30,24 @@ const Register = () => {
     formState: { errors },
   } = useForm<RegisterUserInputs>();
 
-  // TODO: Temp, remove
-  // Or create a helper hook that returns data, loading, and error states
-  const [loading, setLoading] = useState<boolean>(false);
+  const onSubmit: SubmitHandler<RegisterUserInputs> = async (data) => {
+    // setFormData(data);
 
-  const [formData, setFormData] = useState<null | RegisterUserInputs>(null);
+    try {
+      const userData = await registerUser({ ...data }).unwrap();
+      console.log('Register User Data: ', userData);
 
-  useEffect(() => {
-    if (formData) {
-      setLoading(true);
+      // TODO: Test if this still works, or I need to import error from useRegisterMutation
+      // if (res.status !== HttpStatus.CREATED) {
+      //   throw new Error('Bad Request');
+      // }
 
-      console.log('SHOULD FETCH NOW');
-      const controller = new AbortController();
-
-      const tryRegister = async () => {
-        try {
-          const res = await postRegisterUser(formData, {
-            signal: controller.signal,
-          });
-
-          if (res.status !== HttpStatus.CREATED) {
-            throw new Error('Bad Request');
-          }
-
-          const { access_token } = res.data;
-          const { email, username } = decode_at(access_token);
-
-          dispatch(setCredentials({ user: { email, username }, access_token }));
-          navigate(from, { replace: true });
-        } catch (err) {
-          console.log('ERRORRRRR: ', err);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      tryRegister();
-
-      return () => {
-        controller.abort();
-      };
+      dispatch(setCredentials({ ...userData }));
+      navigate(from, { replace: true });
+    } catch (err) {
+      // TODO: handle error better
+      console.log('Register ERRORRRRR: ', err);
     }
-  }, [dispatch, formData, from, navigate]);
-
-  const onSubmit: SubmitHandler<RegisterUserInputs> = (data) => {
-    setFormData(data);
   };
 
   // TODO: Maybe move error mesages to a helper constants file, or get them from server if somehow this passes
@@ -194,7 +167,7 @@ const Register = () => {
           isWide
           size="large"
           type="submit"
-          loading={loading}
+          loading={isLoading}
           onClick={() => console.log('yoo')}
         >
           Login

@@ -65,6 +65,7 @@ const EditPost = () => {
   };
 
   const onDelete = () => {
+    // TODO: on BE on delete cascade and set posts visibility to disabled, will need a new migration as well
     deletePost<PostType, EditPostInputs>({
       url: `/posts/by-id/${postId}`,
       method: RequestMethod.DELETE,
