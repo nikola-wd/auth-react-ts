@@ -1,12 +1,12 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { selectCurrentUser } from '../store/slices/authSlice';
+import { selectCurrentToken } from '../store/slices/authSlice';
 import { useAppSelector } from '../store/hooks';
 
 const AuthGuard = () => {
   const location = useLocation();
-  const currentUser = useAppSelector(selectCurrentUser);
+  const currentToken = useAppSelector(selectCurrentToken);
 
-  return currentUser ? (
+  return currentToken ? (
     <Outlet />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />

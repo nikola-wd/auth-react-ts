@@ -1,5 +1,4 @@
-// import { Navigate, Route, BrowserRouter, Routes } from 'react-router-dom';
-import { Route, BrowserRouter, Routes, Navigate } from 'react-router-dom';
+import { Route, BrowserRouter, Routes } from 'react-router-dom';
 
 import Header from './components/Header/Header';
 import Login from './pages/Login/Login';
@@ -11,12 +10,12 @@ import PublicGuard from './guards/PublicGuard';
 import Posts from './pages/Posts/Posts';
 import TryPersistLogin from './components/auth/TryPersistLogin/TryPersistLogin';
 
-import './App.css';
 import MyPosts from './pages/MyPosts/MyPosts';
 import PostPublic from './pages/Posts/PostPublic';
 import CreatePost from './pages/MyPosts/CreatePost';
 import EditPost from './pages/MyPosts/EditPost';
 
+import './App.css';
 // TODO: Fix. When logged in, and then going to login screen, it doesn't redirect but stays there, and doesn't TryPersist or try get auth state correctly
 
 function App() {

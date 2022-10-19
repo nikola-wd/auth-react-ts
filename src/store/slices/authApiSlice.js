@@ -1,5 +1,4 @@
 import { apiSlice } from './apiSlice';
-// import { LoginUserParams } from '../../types/';
 
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -17,6 +16,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: { ...credentials },
       }),
     }),
+    // TODO: Implement logOut, and forgot password
   }),
 });
 

@@ -9,7 +9,7 @@ import { decode_at } from '../../utils/decode_at';
 import { HttpStatus } from '../../utils/http-status.enum';
 import { RootState } from '../store';
 import { setCredentials, logOut } from './authSlice';
-import { AuthStateAuthType, UserStateType } from './types';
+import { UserStateType } from './types';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_BASE,
