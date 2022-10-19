@@ -1,10 +1,10 @@
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { getCurrentUser } from '../store/slices/authSlice';
+import { selectCurrentUser } from '../store/slices/authSlice';
 import { useAppSelector } from '../store/hooks';
 
 const PublicGuard = () => {
   const location = useLocation();
-  const currentUser = useAppSelector(getCurrentUser);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   return !currentUser ? (
     <Outlet />

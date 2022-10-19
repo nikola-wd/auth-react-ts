@@ -18,7 +18,7 @@ const HeaderUserActions: FC<Partial<AuthStateAuthType>> = ({ user }) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
-  // TODO: If access_token is missing in memory, do the refresh first
+  // TODO: If token is missing in memory, do the refresh first
   const handleLogout = async () => {
     console.log('Logout!!!!!!!!!');
     setIsLoading(true);

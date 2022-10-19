@@ -1,9 +1,9 @@
 import PageWrap from '../../components/PageWrap/PageWrap';
 import { useAppSelector } from '../../store/hooks';
-import { getCurrentUser } from '../../store/slices/authSlice';
+import { selectCurrentUser } from '../../store/slices/authSlice';
 
 const Home = () => {
-  const currentUser = useAppSelector(getCurrentUser);
+  const currentUser = useAppSelector(selectCurrentUser);
 
   return (
     <PageWrap pageTitle="Home">

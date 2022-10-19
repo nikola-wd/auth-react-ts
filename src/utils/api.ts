@@ -2,6 +2,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 
 import { LoginUserParams, RegisterUserParams } from '../types';
 
+// TODO: remove this file when finished
 // Used for independent testing on localhost:3000
 // const API_BASE = process.env.REACT_APP_API_BASE;
 
@@ -43,7 +44,7 @@ export const postLoginUser = async (
   config?: AxiosRequestConfig,
 ) => axiosClient.post(`/auth/local/signin`, data, config);
 
-// Sends the refresh request to try to get a new access_token
+// Sends the refresh request to try to get a new token
 /* export const postRefreshToken = async () =>
   axiosClient.post(`/auth/local/refresh`, null, {
     // withCredentials: true,
@@ -54,13 +55,13 @@ export const postLoginUser = async (
  * */
 
 // Sends the GET request to logout the logged in user
-// Expects header Authorization (or authorization): Bearer access_token
+// Expects header Authorization (or authorization): Bearer token
 // TODO: Maybe remove this fn
 export const getLogoutUser = async (config?: AxiosRequestConfig) =>
   axiosClient.get(`/auth/local/logout`, config);
 
 // ________________________________________________________
-// TODO: create a helper tryRequest fn that sends access_token first, and if it doesn't work, sends refresh req, and then if access doesn't work -> fail. Also, if access_token is not in memory (that may be solved with persist?), first do the refresh and then try
+// TODO: create a helper tryRequest fn that sends token first, and if it doesn't work, sends refresh req, and then if access doesn't work -> fail. Also, if token is not in memory (that may be solved with persist?), first do the refresh and then try
 
 /**
  * POSTS API

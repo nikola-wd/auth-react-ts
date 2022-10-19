@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
@@ -7,18 +6,14 @@ import { FormWrapSC } from '../../styles/FormWrapSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { REGEXSPS } from '../../utils/REGEXPS';
 import Button from '../../components/Button/Button';
-import { setCredentials } from '../../store/slices/authSlice';
 import { ERR_MSG } from '../../utils/ERR_MSG';
-import { postLoginUser } from '../../utils/api';
-import { HttpStatus } from '../../utils/http-status.enum';
-import { decode_at } from '../../utils/decode_at';
 import { LoginUserInputs } from './types';
 import { useAppDispatch } from '../../store/hooks';
+import { setCredentials } from '../../store/slices/authSlice';
+import { useLoginMutation } from '../../store/slices/authApiSlice';
 
 const Login = () => {
-  const [loading, setLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<null | LoginUserInputs>(null);
-  // const [_, setPersist] = usePersist()
+  const [login, { isLoading }] = useLoginMutation();
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -32,45 +27,18 @@ const Login = () => {
     formState: { errors },
   } = useForm<LoginUserInputs>();
 
-  useEffect(() => {
-    if (formData) {
-      setLoading(true);
+  const onSubmit: SubmitHandler<LoginUserInputs> = async (data) => {
+    try {
+      const userData = await login({ ...data }).unwrap();
 
-      console.log('SHOULD FETCH NOW');
-      const controller = new AbortController();
+      console.log('Login User Data: ', userData);
 
-      const tryLogin = async () => {
-        try {
-          const res = await postLoginUser(formData, {
-            signal: controller.signal,
-          });
-
-          if (res.status !== HttpStatus.OK) {
-            throw new Error('Bad Request');
-          }
-
-          const { access_token } = res.data;
-          const { email, username } = decode_at(access_token);
-
-          dispatch(setCredentials({ user: { email, username }, access_token }));
-          navigate(from, { replace: true });
-        } catch (err) {
-          console.log('ERRORRRRR: ', err);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      tryLogin();
-
-      return () => {
-        controller.abort();
-      };
+      dispatch(setCredentials({ ...userData }));
+      navigate(from, { replace: true });
+    } catch (err) {
+      // TODO: Handle error better
+      console.log('ERRORRRRR: ', err);
     }
-  }, [dispatch, formData, from, navigate]);
-
-  const onSubmit: SubmitHandler<LoginUserInputs> = (data) => {
-    setFormData(data);
   };
 
   return (
@@ -141,7 +109,7 @@ const Login = () => {
           isWide
           size="large"
           type="submit"
-          loading={loading}
+          loading={isLoading}
           onClick={() => console.log('yoo')}
         >
           Login

@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import CreatedUpdatedAt from '../../components/CreatedUpdatedAt/CreatedUpdatedAt';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import { useAppSelector } from '../../store/hooks';
-import { getCurrentUser } from '../../store/slices/authSlice';
+import { selectCurrentUser } from '../../store/slices/authSlice';
 import { getAllPosts } from '../../utils/api';
 import { Post } from './types';
 
 const Posts = () => {
-  const currentUser = useAppSelector(getCurrentUser);
+  const currentUser = useAppSelector(selectCurrentUser);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [posts, setPosts] = useState<Post[] | []>([]);

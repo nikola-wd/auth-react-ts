@@ -5,7 +5,7 @@ import usePersist from '../../../hooks/usePersist';
 import useRefreshToken from '../../../hooks/useRefreshToken';
 import { useAppSelector } from '../../../store/hooks';
 import {
-  getCurrentToken,
+  selectCurrentToken,
   setCredentials,
 } from '../../../store/slices/authSlice';
 import Button from '../../Button/Button';
@@ -14,7 +14,7 @@ import Spinner from '../../svg/Spinner';
 // TODO: useRefreshMutation (check github)
 
 const TryPersistLogin = () => {
-  const token = useAppSelector(getCurrentToken);
+  const access_token = useAppSelector(selectCurrentToken);
 
   const location = useLocation();
 
@@ -49,7 +49,7 @@ const TryPersistLogin = () => {
 
       // When page is refreshed, we lose the data
       // TODO: Maybe remove persist
-      if (!token && persist) verifyRefreshToken();
+      if (!access_token && persist) verifyRefreshToken();
     }
 
     return () => {
@@ -98,7 +98,7 @@ const TryPersistLogin = () => {
   } else if (isSuccess && trueSuccess) {
     // persist: yes, token: yes
     content = <Outlet />;
-  } else if (token && isUninitialized) {
+  } else if (access_token && isUninitialized) {
     // persist: yes, token: yes
     console.log(isUninitialized);
     content = <Outlet />;

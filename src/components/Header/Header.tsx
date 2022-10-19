@@ -7,16 +7,16 @@ import HeaderPublicActions from './HeaderPublicActions';
 import HeaderUserActions from './HeaderUserActions';
 import Spinner from '../svg/Spinner';
 import {
-  getCurrentUser,
-  getTryinLoginPersist,
+  selectCurrentUser,
+  selectTryinLoginPersist,
 } from '../../store/slices/authSlice';
 import { useAppSelector } from '../../store/hooks';
 
 // TODO: improve Header TryPersistLogic
 
 const Header = () => {
-  const currentUser = useAppSelector(getCurrentUser);
-  const tryingLoginPersist = useAppSelector(getTryinLoginPersist);
+  const currentUser = useAppSelector(selectCurrentUser);
+  const tryingLoginPersist = useAppSelector(selectTryinLoginPersist);
 
   return (
     <HeaderSC>
