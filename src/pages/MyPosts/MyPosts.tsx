@@ -2,10 +2,12 @@ import { Link } from 'react-router-dom';
 import AdminPostCard from '../../components/AdminPostCard/AdminPostCard';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
-import useOnRenderRequest from '../../hooks/useOnRenderRequest';
+// import useOnRenderRequest from '../../hooks/useOnRenderRequest'; TODO: remove file
+import { useGetAllPostsByUserQuery } from '../../store/slices/postsApiSlice';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { PlgSC } from '../../styles/PLgSC';
 
+// TODO: Move from this file
 export type PostByUser = {
   id: number;
   slug: string;
@@ -20,10 +22,7 @@ const MyPosts = () => {
     isLoading,
     isSuccess,
     isError,
-    isFinished,
-  } = useOnRenderRequest<PostByUser[], null>({
-    url: '/posts/by-user-id',
-  });
+  } = useGetAllPostsByUserQuery();
 
   let content = <></>;
 
@@ -39,7 +38,7 @@ const MyPosts = () => {
         Something Bad Happened. Try refreshing the page, or go back to posts
       </p>
     );
-  } else if (isFinished && isSuccess && posts) {
+  } else if (isSuccess && posts) {
     if (!posts.length) {
       content = (
         <div>
