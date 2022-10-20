@@ -1,8 +1,14 @@
-import { BaseQueryApi } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import {
+  BaseQueryApi,
+  BaseQueryFn,
+} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+// import type { BaseQueryFn } from '@reduxjs/toolkit/query';
+
 import {
   createApi,
   FetchArgs,
   fetchBaseQuery,
+  FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
 import { RefreshReturnData } from '../../hooks/types';
 import { decode_at } from '../../utils/decode_at';
@@ -10,6 +16,12 @@ import { HttpStatus } from '../../utils/http-status.enum';
 import { RootState } from '../store';
 import { setCredentials, logOut } from './authSlice';
 import { UserStateType } from './types';
+
+// TODO: do this better and move from this file
+export type CustomHttpException = {
+  status: number;
+  message?: string;
+};
 
 const baseQuery = fetchBaseQuery({
   baseUrl: process.env.REACT_APP_API_BASE,
@@ -24,12 +36,20 @@ const baseQuery = fetchBaseQuery({
 });
 
 // TODO: Maybe beter type annotations
-const baseQueryWithReauth = async (
-  args: string | FetchArgs,
-  api: BaseQueryApi,
-  extraOptions: {},
-) => {
+const baseQueryWithReauth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError | CustomHttpException
+> = async (args, api, extraOptions: {}) => {
+  // > = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}) => {
   let result = await baseQuery(args, api, extraOptions);
+
+  console.log('API SLICE RESPONSE: ', result);
+
+  // TODO: Figure out if this is done correctly. And configure Nest not to redirect any requests startign with /api to index.html
+  if (result?.error?.status === 'PARSING_ERROR') {
+    throw new Error('Bad Request');
+  }
 
   // originalStatus
   if (result?.error?.status === HttpStatus.UNAUTHORIZED) {

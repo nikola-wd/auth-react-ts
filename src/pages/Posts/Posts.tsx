@@ -1,40 +1,20 @@
-import { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+// import { AxiosError } from 'axios';
+// import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CreatedUpdatedAt from '../../components/CreatedUpdatedAt/CreatedUpdatedAt';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import { useAppSelector } from '../../store/hooks';
+import { CustomHttpException } from '../../store/slices/apiSlice';
 import { selectCurrentUser } from '../../store/slices/authSlice';
-import { getAllPosts } from '../../utils/api';
+import { useGetAllPublicPostsQuery } from '../../store/slices/postsApiSlice';
+// import { getAllPosts } from '../../utils/api'; TODO: remove file
 import { Post } from './types';
 
 const Posts = () => {
   const currentUser = useAppSelector(selectCurrentUser);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string>('');
-  const [posts, setPosts] = useState<Post[] | []>([]);
+  const { data: posts, isLoading, error } = useGetAllPublicPostsQuery();
 
-  // TODO: Refactor this component to use useOnRenderRequest or create a similar one that doesn't send the Bearer token in headers
-
-  // TODO: Fix the double call
-  useEffect(() => {
-    // TODO: Abort controller
-    const fetchPosts = async () => {
-      try {
-        const res = await getAllPosts();
-        setPosts(res.data);
-        console.log(res);
-      } catch (error) {
-        const err = error as AxiosError;
-        console.log('asdasd: ', err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPosts();
-  }, []);
+  console.log('isLoading: ', isLoading);
 
   // TODO: Create a PostPublicCard component
 
@@ -42,10 +22,11 @@ const Posts = () => {
     <PageWrap pageTitle="Home">
       {currentUser && <h3>Welcome, {currentUser!.username}</h3>}
       <br />
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {isLoading && <p>Loading...</p>}
+      {error && <pre>{JSON.stringify(error, null, 2)}</pre>}
+      {error && <p>{(error as CustomHttpException)?.message}</p>}
       {posts &&
-        posts.map((post) => (
+        posts.map((post: Post) => (
           <div key={post.id} style={{ padding: 20 }}>
             <Link to={post.slug} className="c-white">
               <h4>{post.title}</h4>
@@ -66,5 +47,3 @@ const Posts = () => {
 };
 
 export default Posts;
-
-// TODO: if updated at is the same as created at, only show created at

@@ -6,7 +6,7 @@ import Button from '../../components/Button/Button';
 import FormField from '../../components/FormField/FormField';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
-import { useCreateMutation as useCreatePostMutation } from '../../store/slices/postsApiSlice';
+import { useCreatePostMutation } from '../../store/slices/postsApiSlice';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { FormWrapSC } from '../../styles/FormWrapSC';
