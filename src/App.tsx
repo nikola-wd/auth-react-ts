@@ -16,6 +16,7 @@ import EditPost from './pages/MyPosts/EditPost';
 
 // TODO: Reimplement TryLoginPersist with redux
 import './App.css';
+import TryPersistLogin from './components/auth/TryPersistLogin';
 // TODO: Fix. When logged in, and then going to login screen, it doesn't redirect but stays there, and doesn't TryPersist or try get auth state correctly
 
 function App() {
@@ -26,19 +27,21 @@ function App() {
 
         <main className="main">
           <Routes>
-            <Route path="posts">
-              <Route index element={<Posts />} />
-              <Route path=":slug" element={<PostPublic />} />
-            </Route>
-            <Route element={<AuthGuard />}>
-              <Route index element={<Home />} />
-              <Route path="my-posts">
-                <Route index element={<MyPosts />} />
-                <Route path="create" element={<CreatePost />} />
-                <Route path=":postId" element={<EditPost />} />
+            <Route element={<TryPersistLogin />}>
+              <Route path="posts">
+                <Route index element={<Posts />} />
+                <Route path=":slug" element={<PostPublic />} />
               </Route>
+              <Route element={<AuthGuard />}>
+                <Route index element={<Home />} />
+                <Route path="my-posts">
+                  <Route index element={<MyPosts />} />
+                  <Route path="create" element={<CreatePost />} />
+                  <Route path=":postId" element={<EditPost />} />
+                </Route>
+              </Route>
+              {/* TEST remove */}
             </Route>
-            {/* TEST remove */}
             <Route element={<PublicGuard />}>
               <Route path="login" element={<Login />} />
               <Route path="register" element={<Register />} />

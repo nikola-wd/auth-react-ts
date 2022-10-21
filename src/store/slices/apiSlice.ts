@@ -62,6 +62,7 @@ const baseQueryWithReauth: BaseQueryFn<
     );
     console.log('refreshResult: ', refreshResult);
     if (refreshResult.data) {
+      // TODO: Maybe decoding is not needed here, as we are decoding in setCredentials action
       const { access_token } = refreshResult.data as RefreshReturnData;
       const { email, username } = decode_at(access_token as string);
 

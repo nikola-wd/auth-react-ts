@@ -1,6 +1,8 @@
 import { RequestMethod } from '../../utils/request-method.enum';
 import { apiSlice } from './apiSlice';
 
+import { RefreshReturnData } from '../../types';
+
 // TODO: Maybe tags are needed
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
@@ -28,9 +30,16 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: {},
       }),
     }),
+    tryRefreshAccessToken: build.query({
+      query: () => '/auth/local/refresh',
+    }),
     // TODO: Implement forgot password
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation, useLogoutMutation } =
-  authApiSlice;
+export const {
+  useTryRefreshAccessTokenQuery,
+  useRegisterMutation,
+  useLoginMutation,
+  useLogoutMutation,
+} = authApiSlice;

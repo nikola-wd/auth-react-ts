@@ -1,7 +1,7 @@
 export type RefreshReturnData = {
   access_token: null | string;
-  username: null | string;
-  email: null | string;
+  // username: null | string;
+  // email: null | string;
 };
 
 export type RegisterUserParams = {
