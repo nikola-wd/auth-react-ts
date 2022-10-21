@@ -1,7 +1,4 @@
-import {
-  BaseQueryApi,
-  BaseQueryFn,
-} from '@reduxjs/toolkit/dist/query/baseQueryTypes';
+import { BaseQueryFn } from '@reduxjs/toolkit/dist/query/baseQueryTypes';
 // import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 
 import {
@@ -10,7 +7,7 @@ import {
   fetchBaseQuery,
   FetchBaseQueryError,
 } from '@reduxjs/toolkit/query/react';
-import { RefreshReturnData } from '../../hooks/types';
+import { RefreshReturnData } from '../../types';
 import { decode_at } from '../../utils/decode_at';
 import { HttpStatus } from '../../utils/http-status.enum';
 import { RootState } from '../store';
@@ -19,6 +16,7 @@ import { UserStateType } from './types';
 
 // TODO: do this better and move from this file
 export type CustomHttpException = {
+  statusCode?: number;
   status: number;
   message?: string;
 };

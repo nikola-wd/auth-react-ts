@@ -1,12 +1,8 @@
 import { PostDateSC } from '../../styles/PostDateSC';
+import { CreatedAtUpdatedAtType } from '../../types';
 import { getRelDate } from '../../utils/getRelDate';
 
-type CaUaType = {
-  createdAt: Date;
-  updatedAt: Date;
-};
-
-const CreatedUpdatedAt = ({ createdAt, updatedAt }: CaUaType) => {
+const CreatedUpdatedAt = ({ createdAt, updatedAt }: CreatedAtUpdatedAtType) => {
   return (
     <>
       {createdAt !== updatedAt && (

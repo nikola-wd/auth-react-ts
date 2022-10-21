@@ -1,23 +1,36 @@
+import { RequestMethod } from '../../utils/request-method.enum';
 import { apiSlice } from './apiSlice';
 
+// TODO: Maybe tags are needed
 export const authApiSlice = apiSlice.injectEndpoints({
   endpoints: (build) => ({
     login: build.mutation({
       query: (credentials) => ({
         url: '/auth/local/signin',
-        method: 'POST',
+        method: RequestMethod.POST,
+        // TODO: type annotate credentials
         body: { ...credentials },
       }),
     }),
     register: build.mutation({
       query: (credentials) => ({
         url: '/auth/local/signup',
-        method: 'POST',
+        method: RequestMethod.POST,
+        // TODO: type annotate credentials
         body: { ...credentials },
       }),
     }),
-    // TODO: Implement logOut, and forgot password
+    // TODO: Research if AC should really be sent when loggin the user out!
+    logout: build.mutation({
+      query: () => ({
+        url: '/auth/local/logout',
+        method: RequestMethod.POST,
+        body: {},
+      }),
+    }),
+    // TODO: Implement forgot password
   }),
 });
 
-export const { useLoginMutation, useRegisterMutation } = authApiSlice;
+export const { useRegisterMutation, useLoginMutation, useLogoutMutation } =
+  authApiSlice;

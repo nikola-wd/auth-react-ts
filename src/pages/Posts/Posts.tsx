@@ -1,5 +1,3 @@
-// import { AxiosError } from 'axios';
-// import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import CreatedUpdatedAt from '../../components/CreatedUpdatedAt/CreatedUpdatedAt';
 import PageWrap from '../../components/PageWrap/PageWrap';
@@ -7,8 +5,7 @@ import { useAppSelector } from '../../store/hooks';
 import { CustomHttpException } from '../../store/slices/apiSlice';
 import { selectCurrentUser } from '../../store/slices/authSlice';
 import { useGetAllPublicPostsQuery } from '../../store/slices/postsApiSlice';
-// import { getAllPosts } from '../../utils/api'; TODO: remove file
-import { Post } from './types';
+import { Post } from '../../types';
 
 const Posts = () => {
   const currentUser = useAppSelector(selectCurrentUser);

@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../store/hooks';
 import { setCredentials } from '../../store/slices/authSlice';
 import { useLoginMutation } from '../../store/slices/authApiSlice';
 
+// TODO: Handle error sent from the server on login and register
 const Login = () => {
   const [login, { isLoading }] = useLoginMutation();
 
@@ -31,6 +32,8 @@ const Login = () => {
     try {
       const userData = await login({ ...data }).unwrap();
       console.log('Login User Data: ', userData);
+
+      // TODO: Maybe this can be done from inside authApiSlice. Same for Register
       dispatch(setCredentials({ ...userData }));
       navigate(from, { replace: true });
     } catch (err) {

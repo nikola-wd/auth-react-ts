@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import AdminPostCard from '../../components/AdminPostCard/AdminPostCard';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
-// import useOnRenderRequest from '../../hooks/useOnRenderRequest'; TODO: remove file
 import { useGetAllPostsByUserQuery } from '../../store/slices/postsApiSlice';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { PlgSC } from '../../styles/PLgSC';

@@ -3,11 +3,11 @@ import CreatedUpdatedAt from '../../components/CreatedUpdatedAt/CreatedUpdatedAt
 
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
-import useOnRenderRequest from '../../hooks/useOnRenderRequest';
+import { useGetSinglePostBySlugQuery } from '../../store/slices/postsApiSlice';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { PlgSC } from '../../styles/PLgSC';
+import { CustomResponseError } from '../../types';
 import Error404 from '../Error/Error404';
-import { PostType } from './types';
 
 const PostPublic = () => {
   const { slug } = useParams();
@@ -18,10 +18,7 @@ const PostPublic = () => {
     isSuccess,
     isError,
     error,
-    isFinished,
-  } = useOnRenderRequest<PostType, null>({
-    url: `/posts/by-slug/${slug}`,
-  });
+  } = useGetSinglePostBySlugQuery({ postSlug: slug as string });
 
   let content = <></>;
 
@@ -32,7 +29,7 @@ const PostPublic = () => {
       </p>
     );
   } else if (isError && error) {
-    if (error?.statusCode === 404) {
+    if ((error as CustomResponseError)?.statusCode === 404) {
       // TODO: Maybe there is a better way to handle 404
 
       return <Error404 />;
@@ -43,7 +40,7 @@ const PostPublic = () => {
         </p>
       );
     }
-  } else if (isFinished && isSuccess && post) {
+  } else if (isSuccess && post) {
     content = (
       <div>
         <Link to="/posts" className="tdn">

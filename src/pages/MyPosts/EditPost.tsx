@@ -1,25 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Button from '../../components/Button/Button';
 import FormField from '../../components/FormField/FormField';
 import PageWrap from '../../components/PageWrap/PageWrap';
 import Spinner from '../../components/svg/Spinner';
-import useMutationRequest from '../../hooks/useMutationRequest';
-import useOnRenderRequest from '../../hooks/useOnRenderRequest';
+import {
+  useDeletePostMutation,
+  useGetSinglePostByIDQuery,
+  useUpdatePostMutation,
+} from '../../store/slices/postsApiSlice';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { FormWrapSC } from '../../styles/FormWrapSC';
-import { RequestMethod } from '../../utils/request-method.enum';
-import Error404 from '../Error/Error404';
-import { PostType } from '../Posts/types';
-import { EditPostInputs } from './types';
+import { CustomResponseError, EditPostInputs } from '../../types';
 
+// TODO: Maybe refactor from PUT to PATCH
 const EditPost = () => {
-  const { postId } = useParams();
+  const { postId } = useParams<string>();
   const navigate = useNavigate();
 
-  const [postData, setPostData] = useState<PostType | null>(null);
+  const [
+    updatePost,
+    {
+      isLoading: isUpdatingLoading,
+      isSuccess: isUpdatingSuccess,
+      isError: isUpdatingError,
+      error: updatingError,
+    },
+  ] = useUpdatePostMutation();
 
   const {
     register,
@@ -33,60 +42,30 @@ const EditPost = () => {
     isSuccess,
     isError,
     error,
-    isFinished,
-  } = useOnRenderRequest<PostType, null>({
-    url: `/posts/by-id/${postId}`,
-  });
+  } = useGetSinglePostByIDQuery({ postID: parseInt(postId as string) });
 
-  const {
-    mutate: updatePost,
-    cancelRequest,
-    data: updatedPost,
-    isLoading: isUpdatingLoading,
-    isSuccess: isUpdatingSuccess,
-    isError: isUpdatingError,
-    error: updatingError,
-  } = useMutationRequest<PostType>();
-
-  const {
-    mutate: deletePost,
-    isLoading: isDeletingLoading,
-    isSuccess: isDeletingSuccess,
-    isError: isDeletingError,
-    error: deletingError,
-  } = useMutationRequest();
+  const [
+    deletePost,
+    {
+      isLoading: isDeletingLoading,
+      isSuccess: isDeletingSuccess,
+      isError: isDeletingError,
+      error: deletingError,
+    },
+  ] = useDeletePostMutation();
 
   const onSubmit: SubmitHandler<EditPostInputs> = (formData) => {
-    updatePost<PostType, EditPostInputs>({
-      url: `/posts/by-id/${postId}`,
-      method: RequestMethod.PUT,
-      data: formData,
-    });
+    if (typeof postId === 'string') {
+      updatePost({ postID: parseInt(postId), payload: formData });
+    }
   };
 
   const onDelete = () => {
     // TODO: on BE on delete cascade and set posts visibility to disabled, will need a new migration as well
-    deletePost<PostType, EditPostInputs>({
-      url: `/posts/by-id/${postId}`,
-      method: RequestMethod.DELETE,
-    });
+    if (typeof postId === 'string') {
+      deletePost({ postID: parseInt(postId) });
+    }
   };
-
-  useEffect(() => {
-    if (post) {
-      setPostData(post);
-    }
-
-    return () => {
-      cancelRequest();
-    };
-  }, [post, cancelRequest]);
-
-  useEffect(() => {
-    if (updatedPost) {
-      setPostData(updatedPost);
-    }
-  }, [updatedPost]);
 
   useEffect(() => {
     if (isDeletingSuccess) {
@@ -105,18 +84,14 @@ const EditPost = () => {
   } else if ((isError && error) || (isUpdatingError && updatingError)) {
     let err = error || updatingError;
 
-    if (err?.statusCode === 404) {
-      // TODO: Maybe there is a better way to handle 404
+    console.log('UPDATE POST ERROR: ', err);
 
-      return <Error404 />;
-    } else {
-      content = (
-        <p>
-          Something Bad Happened. Try refreshing the page, or go back to posts
-        </p>
-      );
-    }
-  } else if (isFinished && isSuccess && postData) {
+    content = (
+      <p>
+        Something Bad Happened. Try refreshing the page, or go back to posts
+      </p>
+    );
+  } else if (isSuccess && post) {
     // TODO: custom PublicPostCardSC component
     content = (
       <div>
@@ -134,7 +109,7 @@ const EditPost = () => {
               <input
                 type="text"
                 id="update_post_title"
-                defaultValue={postData?.title || ''}
+                defaultValue={post?.title || ''}
                 {...register('title', {
                   required: true,
                   minLength: 3,
@@ -153,7 +128,7 @@ const EditPost = () => {
               <input
                 type="text"
                 id="update_post_content"
-                defaultValue={postData?.content || ''}
+                defaultValue={post?.content || ''}
                 {...register('content', {
                   required: true,
                   minLength: 3,
@@ -174,7 +149,7 @@ const EditPost = () => {
               Update Post
             </Button>
 
-            {/* TODO: implement logic for updating the post slug as well, and if it already exists send a warning */}
+            {/* TODO: implement the logic for updating the post slug as well, and if it already exists send a warning */}
           </form>
         </FormWrapSC>
 
@@ -187,7 +162,7 @@ const EditPost = () => {
         {isUpdatingSuccess && (
           <p>
             Finished Updating The Post, check it out:{' '}
-            <Link to={`/posts/${postData.slug}`}>{postData.title}</Link>
+            <Link to={`/posts/${post.slug}`}>{post.title}</Link>
           </p>
         )}
       </div>
@@ -195,7 +170,7 @@ const EditPost = () => {
   }
 
   return (
-    <PageWrap pageTitle={`Edit Post: ${postData?.title || 'Loading Title...'}`}>
+    <PageWrap pageTitle={`Edit Post: ${post?.title || 'Loading Title...'}`}>
       {content}
 
       <ButtonSC danger onClick={onDelete} disabled={isDeletingLoading}>
@@ -203,13 +178,18 @@ const EditPost = () => {
         {isDeletingLoading && <Spinner />}
       </ButtonSC>
 
-      {!isDeletingLoading && isDeletingError && deletingError?.message && (
-        <p style={{ color: 'crimson' }}>{deletingError.message}</p>
-      )}
+      {!isDeletingLoading &&
+        isDeletingError &&
+        (deletingError as CustomResponseError)?.message && (
+          <p style={{ color: 'crimson' }}>
+            {(deletingError as CustomResponseError)?.message}
+          </p>
+        )}
     </PageWrap>
   );
 };
 
 export default EditPost;
 
-// if form is touched but not submitted, popup are you sure. Also, abort controller
+// TODO: Research if abort controller is needed with rtk query
+// TODO: if form is touched but not submitted, popup are you sure. Also, abort controller

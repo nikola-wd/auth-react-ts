@@ -10,7 +10,7 @@ import { useCreatePostMutation } from '../../store/slices/postsApiSlice';
 import { ButtonSC } from '../../styles/ButtonSC';
 import { FormFieldErrorSC } from '../../styles/FormFieldErrorSC';
 import { FormWrapSC } from '../../styles/FormWrapSC';
-import { CreatePostInputs } from './types';
+import { CreatePostInputs } from '../../types';
 
 // TODO: Validate slug on FE and BE to allow only a-z, 0-9
 // Also autogenerate on populated title via defaultValue, trim special chars, and replace ' ' with -
